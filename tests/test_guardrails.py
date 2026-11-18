@@ -35,11 +35,15 @@ def _modules() -> dict[str, Path]:
 
 @cache
 def _imports(module: str) -> frozenset[tuple[str, str | None]]:
-    """(resolved module, imported name) pairs, including function-level imports."""
     path = _modules()[module]
     package = module if path.name == "__init__.py" else module.rpartition(".")[0]
+    return _imports_in(path.read_text(encoding="utf-8"), package)
+
+
+def _imports_in(source: str, package: str) -> frozenset[tuple[str, str | None]]:
+    """(resolved module, imported name) pairs, including function-level imports."""
     found: set[tuple[str, str | None]] = set()
-    for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+    for node in ast.walk(ast.parse(source)):
         if isinstance(node, ast.Import):
             found.update((alias.name, None) for alias in node.names)
         elif isinstance(node, ast.ImportFrom):
@@ -85,24 +89,29 @@ def _inside(module: str, package: str) -> bool:
 
 
 def test_anki_identity_is_pinned() -> None:
-    assert MODEL_ID == 1_704_328_571, MIGRATION_HINT
+    model = _build_model()
+    assert model.model_id == MODEL_ID == 1_704_328_571, MIGRATION_HINT
     assert DECK_ID == 1_704_328_572, MIGRATION_HINT
-    assert FIELDS == [
-        "Hanzi",
-        "Meaning",
-        "Pinyin",
-        "Jyutping",
-        "MandarinAudio",
-        "CantoneseAudio",
-        "StrokeOrder",
-        "HeisigNum",
-        "Lesson",
-        "Story",
-        "SentenceAudio",
-        "Sentence",
-        "SentencePinyin",
-        "SentenceEnglish",
-    ], MIGRATION_HINT
+    assert (
+        [field["name"] for field in model.fields]
+        == FIELDS
+        == [
+            "Hanzi",
+            "Meaning",
+            "Pinyin",
+            "Jyutping",
+            "MandarinAudio",
+            "CantoneseAudio",
+            "StrokeOrder",
+            "HeisigNum",
+            "Lesson",
+            "Story",
+            "SentenceAudio",
+            "Sentence",
+            "SentencePinyin",
+            "SentenceEnglish",
+        ]
+    ), MIGRATION_HINT
 
 
 def test_note_guid_depends_only_on_hanzi() -> None:
@@ -194,10 +203,15 @@ def _client_methods() -> set[str]:
 
 
 def _client_calls(module: str) -> set[str]:
-    """AnkiConnectClient method names referenced as attributes anywhere in a module."""
-    tree = ast.parse(_modules()[module].read_text(encoding="utf-8"))
-    methods = _client_methods()
-    return {node.attr for node in ast.walk(tree) if isinstance(node, ast.Attribute)} & methods
+    return _client_calls_in(_modules()[module].read_text(encoding="utf-8"))
+
+
+def _client_calls_in(source: str) -> set[str]:
+    """AnkiConnectClient method names referenced as attributes anywhere in the source."""
+    attributes = {
+        node.attr for node in ast.walk(ast.parse(source)) if isinstance(node, ast.Attribute)
+    }
+    return attributes & _client_methods()
 
 
 # Read-only AnkiConnectClient methods. New client methods count as mutations until listed.
@@ -289,12 +303,24 @@ def test_song_planning_imports_only_allowlisted_modules() -> None:
     )
 
 
-def test_import_scanner_sees_known_edges() -> None:
-    """Guard the scanner itself so the boundary tests cannot pass vacuously."""
-    assert "anki_chinese.songs.lyrics" in _imported_modules("anki_chinese.songs.analysis")
-    assert ("anki_chinese.activation", "AnkiConnectClient") in _imports("anki_chinese.cli.doctor")
-    assert "anki_chinese.audio.google_tts" in _imported_modules("anki_chinese.audio.factory")
-    assert "google.oauth2" in _imported_modules("anki_chinese.audio.google_tts")
-    assert "version" in _client_calls("anki_chinese.cli.doctor")
-    assert {"find_active_characters"} <= _client_calls("anki_chinese.tui.dashboard_model")
-    assert {"_invoke", "unsuspend_cards", "version"} <= _client_methods()
+# A module the scanner must read correctly, so the boundary tests cannot pass vacuously.
+PLANTED_MODULE = """
+import google.oauth2
+from ..config import DECK_NAME
+
+
+def later(client):
+    from anki_chinese import config
+
+    return client.version()
+"""
+
+
+def test_scanner_finds_planted_imports_and_client_calls() -> None:
+    assert _imports_in(PLANTED_MODULE, "anki_chinese.songs") == {
+        ("google.oauth2", None),
+        ("anki_chinese.config", "DECK_NAME"),
+        ("anki_chinese.config", None),
+    }
+    assert _client_calls_in(PLANTED_MODULE) == {"version"}
+    assert _client_methods() >= CLIENT_READS, "CLIENT_READS names a method the client lacks"
