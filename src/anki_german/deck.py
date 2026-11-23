@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import html
-import re
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 import genanki
+from wordfreq import zipf_frequency
 
 from .analysis import SentenceRecord, level_label
 from .config import CARDS_DIR, DECK_ID, DECK_NAME, DECK_OUTPUT_PATH, MODEL_ID, MODEL_NAME
@@ -66,20 +66,22 @@ def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
     lemma = record.target_lemma
     if gloss := _lookup(lemma, glosses, whole=True) or _lookup(lemma, glosses):
         return f'<div class="gloss">{html.escape(gloss, quote=False)}</div>'
-    # Compound nouns missing from Wiktionary (Lieblingshemd): show their parts,
-    # taking the longest known head and allowing a linking -s/-n/-e/-en/-es.
+    # Compound nouns missing from Wiktionary (Lieblingshemd) show their parts.
+    # English for each part would often pick the wrong sense (Stunden "to defer"),
+    # so only the split is shown, choosing the one whose rarer part is most common
+    # (Handtasche + Dieb, not Hand + Taschendieb).
     if lemma[:1].isupper():
-        for cut in range(3, len(lemma) - 3):
-            modifier, head = lemma[:cut], lemma[cut:].capitalize()
-            for link in ("", "s", "n", "e", "en", "es"):
-                stem = modifier[: len(modifier) - len(link)] if link else modifier
-                if link and not modifier.endswith(link):
-                    continue
-                if (first := _lookup(stem, glosses, whole=True)) and (
-                    second := _lookup(head, glosses, whole=True)
-                ):
-                    parts = f"{stem} + {head}: {_first(first)} + {_first(second)}"
-                    return f'<div class="gloss">{html.escape(parts, quote=False)}</div>'
+        splits = [
+            (stem, head)
+            for cut in range(3, len(lemma) - 2)
+            for link in ("", "s", "n", "e", "en", "es")
+            if lemma[:cut].endswith(link)
+            for stem, head in [(lemma[: cut - len(link)], lemma[cut:].capitalize())]
+            if len(stem) >= 3 and _lookup(stem, glosses) and _lookup(head, glosses)
+        ]
+        if splits:
+            stem, head = max(splits, key=lambda s: min(zipf_frequency(p, "de") for p in s))
+            return f'<div class="gloss">{html.escape(f"{stem} + {head}", quote=False)}</div>'
     return ""
 
 
@@ -88,10 +90,6 @@ def _lookup(word: str, glosses: Mapping[str, str], *, whole: bool = False) -> st
     forms = (word, word.lower(), word.capitalize())
     found = (glosses[f] for f in forms if f in glosses)
     return next((g for g in found if not (whole and g.endswith("…"))), "")
-
-
-def _first(gloss: str) -> str:
-    return re.split(r"[;,]", gloss, maxsplit=1)[0]
 
 
 def _fields(record: SentenceRecord, glosses: Mapping[str, str]) -> list[str]:

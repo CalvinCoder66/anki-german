@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .config import (
+    CORRECTIONS_PATH,
     GLOSSES_PATH,
     GOETHE_DIR,
     GOETHE_FILES,
@@ -55,26 +56,61 @@ def fetch_sources(*, force: bool = False) -> list[Path]:
 _SKIP_SENSE_TAGS = frozenset({"form-of", "alt-of", "obsolete", "archaic", "dated", "rare"})
 
 
+# "agent noun of schlagen" names a word without saying what it means, so the
+# glossary follows it one step to the base word's meaning.
+_DERIVED = re.compile(
+    r"^(?:gerund|agent noun|verbal noun|nominalization|diminutive|female equivalent) of (\S+)$"
+)
+
+
+@dataclass(frozen=True)
+class Glossary:
+    glosses: dict[str, str]
+    names: frozenset[str]  # only ever a person or place in Wiktionary (Eduard): not vocabulary
+
+
 def build_glossary(source: Path, output: Path) -> None:
-    """Reduce kaikki's German JSONL to {word: "meaning; meaning; meaning"}."""
-    senses: dict[str, list[str]] = {}
+    """Reduce kaikki's German JSONL to card-sized English meanings and a list of names."""
+    common: dict[str, list[str]] = {}
+    proper: dict[str, list[str]] = {}
     with gzip.open(source, "rt", encoding="utf-8") as handle:
         for line in handle:
             entry = json.loads(line)
-            if entry.get("pos") == "name":  # Nebelhorn the mountain, not the foghorn
-                continue
-            meanings = senses.setdefault(entry["word"], [])
+            bucket = proper if entry.get("pos") == "name" else common
+            meanings = bucket.setdefault(entry["word"], [])
             for sense in entry.get("senses", []):
                 if _SKIP_SENSE_TAGS & set(sense.get("tags", [])):
                     continue
-                # Card-sized: no parentheticals, at most three synonyms per sense.
-                gloss = re.sub(r"\s*\([^)]*\)", "", (sense.get("glosses") or [""])[0])
+                # Card-sized: no (notes) or [grammar], at most three synonyms per sense.
+                gloss = re.sub(r"\s*(\([^)]*\)|\[[^\]]*\])", "", (sense.get("glosses") or [""])[0])
                 gloss = ", ".join(part.strip() for part in gloss.split(",")[:3]).strip()
                 if gloss and gloss not in meanings:
                     meanings.append(gloss)
-    glossary = {word: _join(meanings) for word, meanings in senses.items() if meanings}
+    # A proper-name entry counts only when the word has nothing else: Latein the
+    # language yes, Nebelhorn the mountain no (it is also a foghorn). Names other
+    # than languages are not vocabulary.
+    names = sorted(
+        word
+        for word, meanings in proper.items()
+        if meanings and not common.get(word) and not any("language" in m for m in meanings)
+    )
+    for word, meanings in proper.items():
+        if meanings and not common.get(word):
+            common[word] = meanings
+    plain = {word: _join(meanings) for word, meanings in common.items() if meanings}
+
+    def resolve(meaning: str) -> str:
+        match = _DERIVED.match(meaning)
+        base = match and (plain.get(match[1]) or plain.get(match[1].lower()))
+        return f"{meaning}: {base.split('; ')[0]}" if base else meaning
+
+    glosses = {
+        word: _join([resolve(m) for m in meanings]) for word, meanings in common.items() if meanings
+    }
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(glossary, ensure_ascii=False), encoding="utf-8")
+    output.write_text(
+        json.dumps({"glosses": glosses, "names": names}, ensure_ascii=False), encoding="utf-8"
+    )
 
 
 def _join(meanings: list[str]) -> str:
@@ -94,8 +130,27 @@ def _join(meanings: list[str]) -> str:
     return text
 
 
-def load_glosses(path: Path = GLOSSES_PATH) -> dict[str, str]:
-    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+def load_glossary(path: Path = GLOSSES_PATH) -> Glossary:
+    if not path.exists():
+        return Glossary({}, frozenset())
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return Glossary(data["glosses"], frozenset(data["names"]))
+
+
+@dataclass(frozen=True)
+class Corrections:
+    drop_sentences: frozenset[int]
+    translations: dict[int, str]
+    meanings: dict[str, str]
+
+
+def load_corrections(path: Path = CORRECTIONS_PATH) -> Corrections:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return Corrections(
+        frozenset(data["drop_sentences"]),
+        {int(sentence_id): text for sentence_id, text in data["translations"].items()},
+        data["meanings"],
+    )
 
 
 def _read_sentences(path: Path) -> dict[int, str]:

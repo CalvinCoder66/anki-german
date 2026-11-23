@@ -81,6 +81,13 @@ separable particle:
 }
 ```
 
+## Fix a card
+
+`data/source/german_corrections.json` holds hand corrections, applied on every
+build: Tatoeba sentence IDs to drop (`drop_sentences`), better English for a
+sentence (`translations`, keyed by the Tatoeba ID shown on each card), and
+meanings that replace Wiktionary's for a word (`meanings`).
+
 ## How difficulty is graded
 
 - **Words:** a word on the Goethe A1, A2, or B1 list gets that level. Other

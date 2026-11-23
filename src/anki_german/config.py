@@ -12,6 +12,9 @@ CARDS_DIR = Path(__file__).resolve().parent / "cards"
 DATA_DIR = PROJECT_ROOT / "data"
 TATOEBA_DIR = DATA_DIR / "reference" / "tatoeba"
 GOETHE_DIR = DATA_DIR / "reference" / "goethe"
+# Hand corrections from reviewing cards: dropped sentences, fixed translations,
+# and meanings that Wiktionary lacks or gets wrong for the deck.
+CORRECTIONS_PATH = DATA_DIR / "source" / "german_corrections.json"
 IDIOMS_PATH = DATA_DIR / "source" / "german_idioms.json"
 SENTENCES_PATH = DATA_DIR / "state" / "german_sentences.jsonl"
 DECK_OUTPUT_PATH = DATA_DIR / "build" / "decks" / "german_tatoeba.apkg"

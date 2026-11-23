@@ -171,6 +171,24 @@ def _lemma(text: str, pos: str) -> str:
     return simplemma.lemmatize(text if pos in {"NOUN", "PROPN"} else text.lower(), lang="de")
 
 
+def _best_lemma(token: Any, headwords: frozenset[str]) -> str:
+    """simplemma or spaCy, whichever gives a real dictionary headword.
+
+    Each misses forms the other gets: simplemma keeps "angebaut", "dichten"
+    (for dicht), and "Sports"; spaCy invents "Möhr" for Möhren. Prefer a
+    Wiktionary headword, then the more common word, then the shorter one.
+    """
+    simple = _lemma(token.text, token.pos_)
+    if not headwords or token.lemma_ == simple:
+        return simple
+    candidates = (simple, token.lemma_)
+    return max(candidates, key=lambda c: (c in headwords, zipf_frequency(c, "de"), -len(c)))
+
+
+def _verb_lemma(token: _Token) -> str:
+    return simplemma.lemmatize(token.text.lower(), lang="de")
+
+
 def _grammar(doc: Any) -> list[str]:
     found: set[str] = set()
     for token in doc:
@@ -207,15 +225,20 @@ def _grammar(doc: Any) -> list[str]:
     return sorted(found)
 
 
-def _parse(pair: SentencePair, doc: Any) -> _Parsed:
-    tokens = [_Token(t.text, t.whitespace_, _lemma(t.text, t.pos_), t.pos_) for t in doc]
-    # A separated particle (dependency "svp") attaches to its full or auxiliary verb.
-    # Modal heads are skipped: in "Wir müssen jetzt los" the particle belongs to an
-    # elided verb, not to "müssen".
+def _parse(pair: SentencePair, doc: Any, headwords: frozenset[str]) -> _Parsed:
+    tokens = [_Token(t.text, t.whitespace_, _best_lemma(t, headwords), t.pos_) for t in doc]
+    # A separated particle (dependency "svp") attaches to its full or auxiliary verb,
+    # or to a sentence-initial verb the parser misread as a noun ("Fangen wir hier
+    # an!"). Modal heads are skipped: in "Wir müssen jetzt los" the particle belongs
+    # to an elided verb, not to "müssen".
+    first = _first_word(tokens)
     splits = {
         t.head.i: t.i
         for t in doc
-        if t.dep_ == "svp" and t.head.tag_[:2] in {"VV", "VA"} and t.head.i != t.i
+        if t.dep_ == "svp"
+        and t.text.isalpha()  # not "3." in "mit der PlayStation 3."
+        and t.head.i != t.i
+        and (t.head.tag_[:2] in {"VV", "VA"} or (t.head.i == first and t.head.pos_ == "NOUN"))
     }
     return _Parsed(pair, tokens, splits, _grammar(doc))
 
@@ -225,7 +248,13 @@ def _first_word(tokens: list[_Token]) -> int:
     return next((i for i, t in enumerate(tokens) if t.text[:1].isalpha()), 0)
 
 
-def _units(parsed: _Parsed, separable: Mapping[str, str], verbs_only: set[str]) -> list[_Unit]:
+# Words with a capital inside ("PlayStation") are brand names, not vocabulary.
+_INNER_CAPITAL = re.compile(r"[a-zäöüß][A-ZÄÖÜ]")
+
+
+def _units(
+    parsed: _Parsed, separable: Mapping[str, str], verbs_only: set[str], names: frozenset[str]
+) -> list[_Unit]:
     particles = set(parsed.splits.values())
     first = _first_word(parsed.tokens)
     units: list[_Unit] = []
@@ -234,7 +263,7 @@ def _units(parsed: _Parsed, separable: Mapping[str, str], verbs_only: set[str]) 
             continue
         if index in parsed.splits:
             particle = parsed.tokens[parsed.splits[index]].text.lower()
-            lemma = particle + token.lemma.lower()
+            lemma = particle + _verb_lemma(token)
             units.append(_Unit(lemma, (index, parsed.splits[index]), particle))
             continue
         lower = token.text.lower()
@@ -243,6 +272,8 @@ def _units(parsed: _Parsed, separable: Mapping[str, str], verbs_only: set[str]) 
         lemma = token.lemma
         if index == first and lemma.lower() in verbs_only:
             lemma = lemma.lower()
+        if lemma in names or _INNER_CAPITAL.search(lemma):
+            continue
         particle = separable.get(lemma, "")
         if particle and lower.startswith(particle) and len(lower) > len(particle):
             units.append(_Unit(lemma, (index,), particle, joined=True))
@@ -283,9 +314,15 @@ def analyze(
     levels: LemmaLevels,
     *,
     nlp: Language | None = None,
+    headwords: frozenset[str] = frozenset(),
+    names: frozenset[str] = frozenset(),
     progress: Callable[[int], None] | None = None,
 ) -> list[SentenceRecord]:
-    """Parse candidate sentences and return one graded record per usable sentence."""
+    """Parse candidate sentences and return one graded record per usable sentence.
+
+    ``headwords`` (Wiktionary entries) settle lemma choices, and ``names``
+    (people and places) never become targets.
+    """
     nlp = nlp or load_nlp()
     candidates = _current_spelling([pair for pair in pairs if is_candidate(pair.german)])
     parsed: list[_Parsed] = []
@@ -293,7 +330,7 @@ def analyze(
         zip(candidates, nlp.pipe((p.german for p in candidates), batch_size=512), strict=True),
         start=1,
     ):
-        parsed.append(_parse(pair, doc))
+        parsed.append(_parse(pair, doc, headwords))
         if progress and count % 10_000 == 0:
             progress(count)
 
@@ -304,7 +341,7 @@ def analyze(
     for item in parsed:
         for verb, particle in item.splits.items():
             prefix = item.tokens[particle].text.lower()
-            separable.setdefault(prefix + item.tokens[verb].lemma.lower(), prefix)
+            separable.setdefault(prefix + _verb_lemma(item.tokens[verb]), prefix)
 
     # The parser sometimes reads a sentence-initial verb as a noun ("Amüsieren ihr
     # euch nicht?"). Such a word is the verb when the corpus uses it as a verb and
@@ -320,7 +357,7 @@ def analyze(
 
     records: list[SentenceRecord] = []
     for item in parsed:
-        units = _units(item, separable, verbs_only)
+        units = _units(item, separable, verbs_only, names)
         if not units:
             continue
         graded = sorted(((levels.level(u.lemma), -i, u) for i, u in enumerate(units)), reverse=True)

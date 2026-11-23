@@ -16,7 +16,7 @@ from anki_german.analysis import (
 )
 from anki_german.deck import build_deck, select_cards
 from anki_german.idioms import load_idioms
-from anki_german.sources import SentencePair, build_glossary
+from anki_german.sources import SentencePair, build_glossary, load_glossary
 
 
 @pytest.fixture(scope="module")
@@ -77,6 +77,29 @@ def test_sentence_initial_verbs_are_not_mistaken_for_nouns(nlp):
 
     assert records[verb_first].target_lemma == "amüsieren"
     assert records[noun_first].target_lemma == "Leben"
+
+
+def test_lemmas_prefer_dictionary_headwords_and_names_are_never_targets(nlp):
+    participle = "Ich habe diese Möhren selbst angebaut."
+    imperative = "Fangen wir hier endlich an!"
+    name = "Ich heiße Eduard, aber alle nennen mich Eddi."
+    brand = "Ich spiele mit der PlayStation 3."
+    headwords = frozenset({"anbauen", "Möhre", "anfangen", "fangen"})
+    pairs = [SentencePair(i, g, "") for i, g in enumerate([participle, imperative, name, brand])]
+    levels = LemmaLevels(
+        {"anbauen": 4.0, "Möhre": 3.0, "anfangen": 4.0, "Eduard": 5.0, "PlayStation": 5.0}
+    )
+
+    records = {
+        r.german: r
+        for r in analyze(pairs, levels, nlp=nlp, headwords=headwords, names=frozenset({"Eduard"}))
+    }
+
+    assert records[participle].target_lemma == "anbauen"
+    assert records[imperative].target_lemma == "anfangen"
+    assert records[imperative].separable
+    assert records[name].target_lemma != "Eduard"
+    assert records[brand].target_lemma == "spielen"
 
 
 def test_only_conversational_sentences_in_current_spelling_are_kept(nlp):
@@ -178,8 +201,19 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
         },
         {"word": "bog", "senses": [{"glosses": ["preterite of biegen"], "tags": ["form-of"]}]},
         {"word": "amüsieren", "senses": [{"glosses": [g]} for g in ("a", "b", "c", "d")]},
-        {"word": "Kuh", "senses": [{"glosses": ["cow (female bovine), cattle, heifer, kine"]}]},
+        {
+            "word": "Kuh",
+            "senses": [{"glosses": ["cow (female bovine) [informal], cattle, heifer, kine"]}],
+        },
+        {"word": "Nebelhorn", "senses": [{"glosses": ["foghorn"]}]},
         {"word": "Nebelhorn", "pos": "name", "senses": [{"glosses": ["a mountain"]}]},
+        {"word": "Eduard", "pos": "name", "senses": [{"glosses": ["a male given name"]}]},
+        {"word": "Latein", "pos": "name", "senses": [{"glosses": ["Latin language"]}]},
+        {"word": "Schläger", "senses": [{"glosses": ["agent noun of schlagen"]}]},
+        {
+            "word": "schlagen",
+            "senses": [{"glosses": ["to hit, to beat"]}, {"glosses": ["to whip"]}],
+        },
         {"word": "Spiel", "senses": [{"glosses": ["game"]}, {"glosses": ["x" * 150]}]},
         {"word": "Abitur", "senses": [{"glosses": ["final exams " + "taken by pupils " * 10]}]},
     ]
@@ -187,24 +221,39 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
     with gzip.open(source, "wt", encoding="utf-8") as handle:
         handle.writelines(json.dumps(entry) + "\n" for entry in entries)
     build_glossary(source, tmp_path / "glosses.json")
-    glosses = json.loads((tmp_path / "glosses.json").read_text(encoding="utf-8"))
+    glossary = load_glossary(tmp_path / "glosses.json")
+    glosses = glossary.glosses
 
+    assert glossary.names == {"Eduard"}
     assert glosses == {
         "Kater": "tomcat; hangover",
         "amüsieren": "a; b; c",
         "Kuh": "cow, cattle, heifer",
         "Spiel": "game",
         "Abitur": "final exams " + "taken by pupils " * 5 + "taken…",
+        "Nebelhorn": "foghorn",
+        "Eduard": "a male given name",
+        "Latein": "Latin language",
+        "Schläger": "agent noun of schlagen: to hit, to beat",
+        "schlagen": "to hit, to beat; to whip",
     }
 
-    # A sentence-initial verb the parser capitalized still finds its meaning.
-    cards = [_record(1, "Amüsieren", 3.0), replace(_record(2, "Kater", 3.0), source="idiom")]
+    # A sentence-initial verb the parser capitalized still finds its meaning, and
+    # an unlisted compound shows its most plausible split without guessing senses.
+    glosses = {**glosses, "Handtasche": "handbag", "Dieb": "thief", "Hand": "hand"}
+    glosses["Taschendieb"] = "pickpocket"
+    cards = [
+        _record(1, "Amüsieren", 3.0),
+        replace(_record(2, "Kater", 3.0), source="idiom"),
+        _record(3, "Handtaschendieb", 3.5),
+    ]
     fields = [
         row[3].split("\x1f")
         for row in _notes(build_deck(cards, tmp_path / "g.apkg", glosses), tmp_path)
     ]
     assert fields[0][1] == 'Amüsieren<div class="gloss">a; b; c</div>'
     assert "gloss" not in fields[1][1]  # idioms carry their own meaning
+    assert fields[2][1] == 'Handtaschendieb<div class="gloss">Handtasche + Dieb</div>'
 
 
 def test_idioms_render_their_markup_and_include_the_requested_ones():
