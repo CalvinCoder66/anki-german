@@ -10,6 +10,7 @@ import typer
 from .analysis import LemmaLevels, SentenceRecord, analyze, level_label
 from .config import DECK_OUTPUT_PATH, SENTENCES_PATH
 from .deck import build_deck, select_cards
+from .idioms import load_idioms
 from .sources import fetch_sources, load_goethe_levels, load_pairs
 
 app = typer.Typer(
@@ -50,12 +51,16 @@ def build(
     limit: int | None = typer.Option(None, help="Keep only the easiest N cards."),
     dry_run: bool = typer.Option(False, help="Show the selection without writing the APKG."),
 ) -> None:
-    """Pick one sentence per new word for LEVEL, easiest first, and write the APKG."""
+    """Pick one sentence per new word for LEVEL, add the idioms, and write the APKG."""
     if not SENTENCES_PATH.exists():
         raise typer.BadParameter("Run `anki-german fetch` and `anki-german analyze` first.")
     with SENTENCES_PATH.open(encoding="utf-8") as handle:
         records = [SentenceRecord.from_dict(json.loads(line)) for line in handle]
-    cards = select_cards(records, level=level, span=span, limit=limit)
+    # Idioms are always included and slot in among the sentences by level.
+    cards = sorted(
+        select_cards(records, level=level, span=span, limit=limit) + load_idioms(),
+        key=lambda r: (r.difficulty, r.target_lemma),
+    )
     typer.echo(f"{len(cards):,} cards for level {level} ({level_label(level)})")
     typer.echo(_histogram(cards))
     for card in cards[:: max(1, len(cards) // 10)][:10]:

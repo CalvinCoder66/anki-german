@@ -1,3 +1,4 @@
+import re
 import sqlite3
 import zipfile
 from dataclasses import replace
@@ -12,6 +13,7 @@ from anki_german.analysis import (
     load_nlp,
 )
 from anki_german.deck import build_deck, select_cards
+from anki_german.idioms import load_idioms
 from anki_german.sources import SentencePair
 
 
@@ -140,3 +142,23 @@ def test_rebuilding_keeps_each_words_note_and_orders_new_cards(tmp_path):
 
     assert [row[1] for row in a] == ["ständig", "erschöpft"]
     assert [row[0] for row in a] == [row[0] for row in b]
+
+
+def test_idioms_render_their_markup_and_include_the_requested_ones():
+    idioms = {r.target_lemma: r for r in load_idioms()}
+
+    assert len(idioms) == len(load_idioms())
+    assert {
+        "Ich verstehe nur Bahnhof.",
+        "Tomaten auf den Augen haben",
+        "Das ist mir Wurst (Wurscht).",
+        "jemandem einen Bären aufbinden",
+        "Da wird ja der Hund in der Pfanne verrückt!",
+    } <= set(idioms)
+    for record in idioms.values():
+        assert not re.search(r"[\[\]{}]", record.german + record.html + record.target_display)
+        assert '<b class="target">' in record.html
+        assert 1.0 <= record.target_level <= 6.0
+    bear = idioms["jemandem einen Bären aufbinden"]
+    assert bear.separable
+    assert '<b class="target"><span class="sep">auf</span></b>' in bear.html

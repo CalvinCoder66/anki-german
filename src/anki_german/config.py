@@ -12,6 +12,7 @@ CARDS_DIR = Path(__file__).resolve().parent / "cards"
 DATA_DIR = PROJECT_ROOT / "data"
 TATOEBA_DIR = DATA_DIR / "reference" / "tatoeba"
 GOETHE_DIR = DATA_DIR / "reference" / "goethe"
+IDIOMS_PATH = DATA_DIR / "source" / "german_idioms.json"
 SENTENCES_PATH = DATA_DIR / "state" / "german_sentences.jsonl"
 DECK_OUTPUT_PATH = DATA_DIR / "build" / "decks" / "german_tatoeba.apkg"
 

@@ -76,7 +76,9 @@ from half a level below yours up to one above, in a sentence whose other words
 are at or below your level; new cards arrive easiest first. Raise `--level` and rebuild to climb: notes are keyed by
 word, so existing cards update instead of duplicating. Separable verbs
 highlight both parts; modal particles and contractions stay in sentences but
-are never targets.
+are never targets. Every build also adds the everyday idioms in
+`data/source/german_idioms.json` (meaning, literal translation, and an example
+where `[...]` marks the idiom and `{...}` a separable particle).
 
 ## How it works
 
