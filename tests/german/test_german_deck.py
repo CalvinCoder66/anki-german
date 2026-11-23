@@ -1,3 +1,5 @@
+import gzip
+import json
 import re
 import sqlite3
 import zipfile
@@ -14,7 +16,7 @@ from anki_german.analysis import (
 )
 from anki_german.deck import build_deck, select_cards
 from anki_german.idioms import load_idioms
-from anki_german.sources import SentencePair
+from anki_german.sources import SentencePair, build_glossary
 
 
 @pytest.fixture(scope="module")
@@ -57,6 +59,24 @@ def test_particles_and_contractions_stay_in_text_but_never_become_targets(nlp):
 
     assert record.target_lemma == "sagen"
     assert "hab's" in record.html and "doch schon mal" in record.html
+
+
+def test_sentence_initial_verbs_are_not_mistaken_for_nouns(nlp):
+    verb_first = "Amüsieren ihr euch nicht?"
+    noun_first = "Leben ist schön, findest du nicht?"
+    corpus = [
+        verb_first,
+        "Wir amüsieren uns sehr gut.",
+        noun_first,
+        "Ich liebe das Leben sehr.",
+        "Wir leben jetzt in Berlin.",
+    ]
+    levels = {"amüsieren": 4.0, "Leben": 4.0, "leben": 4.0, "schön": 1.0, "finden": 1.0}
+
+    records = _analyze(nlp, corpus, levels)
+
+    assert records[verb_first].target_lemma == "amüsieren"
+    assert records[noun_first].target_lemma == "Leben"
 
 
 def test_only_conversational_sentences_in_current_spelling_are_kept(nlp):
@@ -123,25 +143,68 @@ def test_selection_adds_one_new_word_per_card_easiest_first():
     assert [(c.id, c.target_lemma) for c in cards] == [(4, "ständig"), (1, "erschöpft")]
 
 
+def _notes(path, tmp_path):
+    with zipfile.ZipFile(path) as apkg:
+        apkg.extract("collection.anki2", tmp_path)
+    db = sqlite3.connect(tmp_path / "collection.anki2")
+    rows = db.execute(
+        "select n.guid, n.sfld, c.due, n.flds from notes n join cards c on c.nid = n.id"
+        " order by c.due"
+    ).fetchall()
+    db.close()
+    return rows
+
+
 def test_rebuilding_keeps_each_words_note_and_orders_new_cards(tmp_path):
     first = [_record(1, "ständig", 3.2), _record(2, "erschöpft", 4.0)]
     second = [replace(first[0], id=9, html="Anderer Satz"), first[1]]
 
-    def notes(path):
-        with zipfile.ZipFile(path) as apkg:
-            apkg.extract("collection.anki2", tmp_path)
-        db = sqlite3.connect(tmp_path / "collection.anki2")
-        rows = db.execute(
-            "select n.guid, n.sfld, c.due from notes n join cards c on c.nid = n.id order by c.due"
-        ).fetchall()
-        db.close()
-        return rows
-
-    a = notes(build_deck(first, tmp_path / "a.apkg"))
-    b = notes(build_deck(second, tmp_path / "b.apkg"))
+    a = _notes(build_deck(first, tmp_path / "a.apkg"), tmp_path)
+    b = _notes(build_deck(second, tmp_path / "b.apkg"), tmp_path)
 
     assert [row[1] for row in a] == ["ständig", "erschöpft"]
     assert [row[0] for row in a] == [row[0] for row in b]
+
+
+def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
+    entries = [
+        {"word": "Kater", "senses": [{"glosses": ["tomcat"]}]},
+        {
+            "word": "Kater",
+            "senses": [
+                {"glosses": ["hangover"]},
+                {"glosses": ["ellipsis of Muskelkater"], "tags": ["alt-of"]},
+            ],
+        },
+        {"word": "bog", "senses": [{"glosses": ["preterite of biegen"], "tags": ["form-of"]}]},
+        {"word": "amüsieren", "senses": [{"glosses": [g]} for g in ("a", "b", "c", "d")]},
+        {"word": "Kuh", "senses": [{"glosses": ["cow (female bovine), cattle, heifer, kine"]}]},
+        {"word": "Nebelhorn", "pos": "name", "senses": [{"glosses": ["a mountain"]}]},
+        {"word": "Spiel", "senses": [{"glosses": ["game"]}, {"glosses": ["x" * 150]}]},
+        {"word": "Abitur", "senses": [{"glosses": ["final exams " + "taken by pupils " * 10]}]},
+    ]
+    source = tmp_path / "kaikki.jsonl.gz"
+    with gzip.open(source, "wt", encoding="utf-8") as handle:
+        handle.writelines(json.dumps(entry) + "\n" for entry in entries)
+    build_glossary(source, tmp_path / "glosses.json")
+    glosses = json.loads((tmp_path / "glosses.json").read_text(encoding="utf-8"))
+
+    assert glosses == {
+        "Kater": "tomcat; hangover",
+        "amüsieren": "a; b; c",
+        "Kuh": "cow, cattle, heifer",
+        "Spiel": "game",
+        "Abitur": "final exams " + "taken by pupils " * 5 + "taken…",
+    }
+
+    # A sentence-initial verb the parser capitalized still finds its meaning.
+    cards = [_record(1, "Amüsieren", 3.0), replace(_record(2, "Kater", 3.0), source="idiom")]
+    fields = [
+        row[3].split("\x1f")
+        for row in _notes(build_deck(cards, tmp_path / "g.apkg", glosses), tmp_path)
+    ]
+    assert fields[0][1] == 'Amüsieren<div class="gloss">a; b; c</div>'
+    assert "gloss" not in fields[1][1]  # idioms carry their own meaning
 
 
 def test_idioms_render_their_markup_and_include_the_requested_ones():

@@ -220,8 +220,14 @@ def _parse(pair: SentencePair, doc: Any) -> _Parsed:
     return _Parsed(pair, tokens, splits, _grammar(doc))
 
 
-def _units(parsed: _Parsed, separable: Mapping[str, str]) -> list[_Unit]:
+def _first_word(tokens: list[_Token]) -> int:
+    """Index of the first word, past any opening quote or dash."""
+    return next((i for i, t in enumerate(tokens) if t.text[:1].isalpha()), 0)
+
+
+def _units(parsed: _Parsed, separable: Mapping[str, str], verbs_only: set[str]) -> list[_Unit]:
     particles = set(parsed.splits.values())
+    first = _first_word(parsed.tokens)
     units: list[_Unit] = []
     for index, token in enumerate(parsed.tokens):
         if index in particles:
@@ -234,11 +240,14 @@ def _units(parsed: _Parsed, separable: Mapping[str, str]) -> list[_Unit]:
         lower = token.text.lower()
         if token.pos not in CONTENT_POS or not token.text.isalpha() or lower in SKIP_WORDS:
             continue
-        particle = separable.get(token.lemma, "")
+        lemma = token.lemma
+        if index == first and lemma.lower() in verbs_only:
+            lemma = lemma.lower()
+        particle = separable.get(lemma, "")
         if particle and lower.startswith(particle) and len(lower) > len(particle):
-            units.append(_Unit(token.lemma, (index,), particle, joined=True))
+            units.append(_Unit(lemma, (index,), particle, joined=True))
         else:
-            units.append(_Unit(token.lemma, (index,)))
+            units.append(_Unit(lemma, (index,)))
     return units
 
 
@@ -297,9 +306,21 @@ def analyze(
             prefix = item.tokens[particle].text.lower()
             separable.setdefault(prefix + item.tokens[verb].lemma.lower(), prefix)
 
+    # The parser sometimes reads a sentence-initial verb as a noun ("Amüsieren ihr
+    # euch nicht?"). Such a word is the verb when the corpus uses it as a verb and
+    # never as a noun mid-sentence, which keeps real nouns like "Essen" intact.
+    verbs = {t.lemma for item in parsed for t in item.tokens if t.pos == "VERB"}
+    mid_nouns = {
+        t.lemma.lower()
+        for item in parsed
+        for i, t in enumerate(item.tokens)
+        if i > _first_word(item.tokens) and t.pos == "NOUN" and t.text[:1].isupper()
+    }
+    verbs_only = verbs - mid_nouns
+
     records: list[SentenceRecord] = []
     for item in parsed:
-        units = _units(item, separable)
+        units = _units(item, separable, verbs_only)
         if not units:
             continue
         graded = sorted(((levels.level(u.lemma), -i, u) for i, u in enumerate(units)), reverse=True)

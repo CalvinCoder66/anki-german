@@ -1,97 +1,112 @@
-# anki-chinese
+# anki-german
 
-Maintain a Mandarin Anki deck with Cantonese support.
+Build a German Anki deck for an upper-intermediate learner: conversational
+sentences graded by difficulty, separable verbs highlighted, and everyday
+idioms.
 
-[![CI](https://github.com/ColinCee/anki-chinese/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/ColinCee/anki-chinese/actions/workflows/ci.yml?query=branch%3Amaster)
+[![CI](https://github.com/CalvinCoder66/anki-german/actions/workflows/ci.yml/badge.svg?branch=master&event=push)](https://github.com/CalvinCoder66/anki-german/actions/workflows/ci.yml?query=branch%3Amaster)
 
 ## What it does
 
-- Builds character recognition, vocabulary-in-context, and example-sentence cards
-- Generates Mandarin and Cantonese pronunciation audio
-- Plans study targets from curated song lyrics
-- Leaves reviews to Anki; keeps rebuildable content separate from preview-first
-  live card activation
-
-## Stack
-
-| Area | Tooling |
-| --- | --- |
-| CLI / workbench | Python 3.13, uv, Typer, Textual |
-| Deck output | genanki APKG, AnkiConnect for live state |
-| Text | jieba, pypinyin, pycantonese, wordfreq |
-| Generation | Gemini (sentences), Google TTS or MiniMax (audio) |
+- Takes short conversational German sentences with English translations from
+  [Tatoeba](https://tatoeba.org) (CC BY 2.0 FR)
+- Grades every word and sentence on one continuous scale (A1=1, A2=2, B1=3,
+  B2=4, C1=5, C2=6), so 3.5 means borderline B1/B2
+- Gives each card one target word, in a sentence whose other words are at or
+  below your level; new cards arrive easiest first
+- Shows the target word's English meaning from Wiktionary (via
+  [kaikki.org](https://kaikki.org), CC BY-SA); compounds missing from it show
+  their parts (*Skiunfall: ski + accident*)
+- Highlights both parts of separable verbs (*Ich **bog** rechts **ab***), and
+  keeps modal particles and contractions (doch, mal, *hab's*) in sentences
+  without ever making them the target
+- Adds the everyday idioms in `data/source/german_idioms.json`
 
 ## Start
 
-You need Python 3.13+, [uv](https://docs.astral.sh/uv/), and Anki desktop for
-import/review. Canonical character records are included; no Anki export or
-source replacement is needed for a normal first rebuild.
+You need [uv](https://docs.astral.sh/uv/getting-started/installation/) and
+[Anki desktop](https://apps.ankiweb.net). uv installs the right Python by itself.
 
 ```bash
-git clone https://github.com/ColinCee/anki-chinese.git
-cd anki-chinese
+git clone https://github.com/CalvinCoder66/anki-german.git
+cd anki-german
 uv sync
-uv run anki-chinese doctor
-uv run anki-chinese
-```
-
-The terminal workbench guides human workflows. Agents and scripts use
-`uv run anki-chinese <command> --help` and deterministic commands directly.
-`doctor` is read-only: it checks readiness and credential presence, not provider
-authentication. `doctor --check-anki` adds only a local AnkiConnect version probe.
-
-## First rebuild
-
-Without paid generation or audio credentials:
-
-```bash
-uv run anki-chinese sync --dry-run
-uv run anki-chinese sync --skip-audio
-```
-
-Import `data/build/decks/chinese_rsh.apkg` into Anki. Existing audio may be
-included, but missing audio is not generated. For full audio, configure
-[credentials](docs/reference.md#environment-variables) and run `sync`.
-Sentence generation is [separate](docs/workflows.md#generate-sentences-and-meanings).
-
-Stable [Anki identity](docs/reference.md#anki-model) lets imports update notes
-instead of duplicating them. Rebuilding alone does not change the open collection.
-AnkiConnect is needed for live-state workflows, not APKG rebuilding.
-To use a different dataset, follow [Replace the source](docs/workflows.md#replace-the-source).
-
-## German deck (Tatoeba)
-
-`anki-german` builds a separate German deck from Tatoeba sentence pairs.
-Levels use one continuous scale (A1=1 … B1=3, B2=4 … C2=6), so 3.5 means
-borderline B1/B2:
-
-```bash
-uv run anki-german fetch            # Tatoeba + Goethe A1-B1 lists (gitignored cache)
-uv run anki-german analyze          # grade ~240k sentences, a few minutes
+uv run anki-german fetch            # Tatoeba, Goethe lists, Wiktionary: ~140 MB
+uv run anki-german analyze          # grade ~240k sentences, a few minutes, once
 uv run anki-german build --level 3.5
 ```
 
-Import `data/build/decks/german_tatoeba.apkg`. Each card teaches one target word,
-from half a level below yours up to one above, in a sentence whose other words
-are at or below your level; new cards arrive easiest first. Raise `--level` and rebuild to climb: notes are keyed by
-word, so existing cards update instead of duplicating. Separable verbs
-highlight both parts; modal particles and contractions stay in sentences but
-are never targets. Every build also adds the everyday idioms in
-`data/source/german_idioms.json` (meaning, literal translation, and an example
-where `[...]` marks the idiom and `{...}` a separable particle).
+`fetch` and `analyze` run once. `build` takes seconds; add `--dry-run` to
+preview the selection without writing the deck.
 
-## How it works
+## Import into Anki
 
-Canonical records in `data/source/` are enriched, given audio, and rebuilt into
-an APKG for manual import; live suspension and review state change only through
-AnkiConnect. See [Data layout](docs/reference.md#data-layout) and
-[Workflows](docs/workflows.md).
+1. Open Anki desktop and choose **File → Import**, or double-click the file.
+2. Pick `data/build/decks/german_tatoeba.apkg`.
+3. The cards appear under the **German → Tatoeba** deck. Click it, then
+   **Study Now**.
 
-## Find the right guide
+To study on your phone, sign in to a free AnkiWeb account in Anki desktop and
+press **Sync**, then sign in to the same account in AnkiDroid (free) or
+AnkiMobile (iOS). Later rebuilds reach your phone the same way.
 
-- [Workflows](docs/workflows.md): edit content, generate audio, rebuild templates,
-  and learn from songs.
-- [Reference](docs/reference.md): configuration, data ownership, and Anki model.
-- [Decisions](docs/decisions/): why the study target and providers were chosen.
-- [Contributing](CONTRIBUTING.md): code map, development, and documentation maintenance.
+## Move up a level
+
+Rebuild with a higher level and import the new file:
+
+```bash
+uv run anki-german build --level 3.8
+```
+
+Notes are keyed by their target word or idiom, so re-importing updates
+existing cards and keeps your review history instead of duplicating them.
+`--span` sets how far above your level targets may reach (default 1.0), and
+`--limit` keeps only the easiest N sentences.
+
+## Add idioms
+
+Edit `data/source/german_idioms.json` and rebuild. Each entry has the idiom, an
+English meaning, a literal translation, a level, and an example sentence. In
+`example` (and `idiom`), `[...]` marks the idiom's words and `{...}` a
+separable particle:
+
+```json
+{
+  "idiom": "jemandem einen Bären {auf}binden",
+  "meaning": "to pull someone's leg; to tell someone a tall tale",
+  "literal": "to tie a bear onto someone",
+  "level": 4.5,
+  "example": "Jetzt [bindest] du mir aber [einen Bären] [{auf}]!",
+  "example_en": "Now you're pulling my leg!"
+}
+```
+
+## How difficulty is graded
+
+- **Words:** a word on the Goethe A1, A2, or B1 list gets that level. Other
+  words are graded by how common they are, continuing the frequency drop seen
+  across the Goethe levels; rare compounds are graded by their parts.
+- **Sentences:** the higher of the hardest word and the hardest grammar
+  (subordinate clauses A2; Konjunktiv II, passive, relative clauses B1;
+  genitive B1+; *je … desto* B2; Konjunktiv I C1), plus a little for length.
+- Pre-1996 spellings such as *daß* are skipped.
+
+Downloads stay in gitignored folders under `data/reference/`; the Goethe lists
+are copyrighted and are not committed.
+
+## Mandarin tooling from the fork
+
+This repository was forked from
+[anki-chinese](https://github.com/ColinCee/anki-chinese), and its Mandarin deck
+tooling is still here under the `anki-chinese` command. The German deck does not
+use it. See [Workflows](docs/workflows.md), [Reference](docs/reference.md), and
+[Decisions](docs/decisions/) for that tooling; its first rebuild is:
+
+```bash
+uv run anki-chinese sync --skip-audio
+```
+
+## Contributing
+
+- [Contributing](CONTRIBUTING.md): code map, checks, and documentation maintenance.
 - [Security](SECURITY.md): private data and vulnerability reporting.

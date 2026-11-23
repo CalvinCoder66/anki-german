@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import html
-from collections.abc import Iterable
+import re
+from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 import genanki
@@ -57,7 +58,43 @@ def _model() -> genanki.Model:
     )
 
 
-def _fields(record: SentenceRecord) -> list[str]:
+def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
+    """English meaning of the target word; the parser sometimes capitalizes a
+    sentence-initial verb ("Amüsieren"), so other cases are tried too."""
+    if record.source != "tatoeba":
+        return ""  # idioms carry their own meaning
+    lemma = record.target_lemma
+    if gloss := _lookup(lemma, glosses, whole=True) or _lookup(lemma, glosses):
+        return f'<div class="gloss">{html.escape(gloss, quote=False)}</div>'
+    # Compound nouns missing from Wiktionary (Lieblingshemd): show their parts,
+    # taking the longest known head and allowing a linking -s/-n/-e/-en/-es.
+    if lemma[:1].isupper():
+        for cut in range(3, len(lemma) - 3):
+            modifier, head = lemma[:cut], lemma[cut:].capitalize()
+            for link in ("", "s", "n", "e", "en", "es"):
+                stem = modifier[: len(modifier) - len(link)] if link else modifier
+                if link and not modifier.endswith(link):
+                    continue
+                if (first := _lookup(stem, glosses, whole=True)) and (
+                    second := _lookup(head, glosses, whole=True)
+                ):
+                    parts = f"{stem} + {head}: {_first(first)} + {_first(second)}"
+                    return f'<div class="gloss">{html.escape(parts, quote=False)}</div>'
+    return ""
+
+
+def _lookup(word: str, glosses: Mapping[str, str], *, whole: bool = False) -> str:
+    """First gloss among the word's case forms; with ``whole``, skip cut-down ones."""
+    forms = (word, word.lower(), word.capitalize())
+    found = (glosses[f] for f in forms if f in glosses)
+    return next((g for g in found if not (whole and g.endswith("…"))), "")
+
+
+def _first(gloss: str) -> str:
+    return re.split(r"[;,]", gloss, maxsplit=1)[0]
+
+
+def _fields(record: SentenceRecord, glosses: Mapping[str, str]) -> list[str]:
     source = (
         f'<a href="https://tatoeba.org/de/sentences/show/{record.id}">Tatoeba #{record.id}</a>'
         " · CC BY 2.0 FR"
@@ -66,7 +103,7 @@ def _fields(record: SentenceRecord) -> list[str]:
     )
     return [
         record.target_lemma,
-        record.target_display,
+        record.target_display + _gloss(record, glosses),
         record.html,
         html.escape(record.english, quote=False),
         f"{level_label(record.difficulty)} · {record.difficulty:.1f}",
@@ -83,7 +120,11 @@ def _tags(record: SentenceRecord) -> list[str]:
     return tags
 
 
-def build_deck(cards: list[SentenceRecord], output: Path = DECK_OUTPUT_PATH) -> Path:
+def build_deck(
+    cards: list[SentenceRecord],
+    output: Path = DECK_OUTPUT_PATH,
+    glosses: Mapping[str, str] | None = None,
+) -> Path:
     """Write the APKG. New cards keep the given order; each word's note keeps its GUID."""
     model = _model()
     deck = genanki.Deck(DECK_ID, DECK_NAME)
@@ -91,7 +132,7 @@ def build_deck(cards: list[SentenceRecord], output: Path = DECK_OUTPUT_PATH) -> 
         deck.add_note(
             genanki.Note(
                 model=model,
-                fields=_fields(record),
+                fields=_fields(record, glosses or {}),
                 tags=_tags(record),
                 guid=genanki.guid_for(f"german-{record.source}", record.target_lemma),
                 due=position,

@@ -11,7 +11,7 @@ from .analysis import LemmaLevels, SentenceRecord, analyze, level_label
 from .config import DECK_OUTPUT_PATH, SENTENCES_PATH
 from .deck import build_deck, select_cards
 from .idioms import load_idioms
-from .sources import fetch_sources, load_goethe_levels, load_pairs
+from .sources import fetch_sources, load_glosses, load_goethe_levels, load_pairs
 
 app = typer.Typer(
     help="German deck from Tatoeba. Levels use one scale: A1=1, A2=2, B1=3, B2=4, C1=5, C2=6.",
@@ -26,7 +26,7 @@ def _histogram(records: list[SentenceRecord]) -> str:
 
 @app.command()
 def fetch(force: bool = typer.Option(False, help="Download again even if cached.")) -> None:
-    """Download Tatoeba German/English sentences and the Goethe A1-B1 word lists."""
+    """Download Tatoeba sentences, the Goethe A1-B1 lists, and Wiktionary meanings."""
     written = fetch_sources(force=force)
     typer.echo("\n".join(f"Downloaded {path}" for path in written) or "All sources cached.")
 
@@ -66,4 +66,4 @@ def build(
     for card in cards[:: max(1, len(cards) // 10)][:10]:
         typer.echo(f"  {card.difficulty:.1f}  {card.target_lemma:<18} {card.german}")
     if not dry_run:
-        typer.echo(f"Wrote {build_deck(cards, DECK_OUTPUT_PATH)}")
+        typer.echo(f"Wrote {build_deck(cards, DECK_OUTPUT_PATH, load_glosses())}")

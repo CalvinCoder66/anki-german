@@ -245,7 +245,7 @@ uv run anki-chinese build
 For template-only changes, use `build`, not just `sync`: the planner currently
 tracks source/enriched/audio freshness, not template files. This packages existing
 enriched content and audio without regenerating them. If enriched state is absent,
-first follow [First rebuild](../README.md#first-rebuild). Import the new APKG separately.
+first follow [the Mandarin first rebuild](../README.md#mandarin-tooling-from-the-fork). Import the new APKG separately.
 
 For content changes use [card set](#fix-one-card) or [card add](#add-a-character);
 vocabulary examples belong in the canonical meaning/sentence fields. Preserve
