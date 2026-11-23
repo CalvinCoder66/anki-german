@@ -28,5 +28,6 @@ data/state/german_sentences.jsonl
 # Downloaded German sources (Goethe lists are copyrighted; Tatoeba is large)
 data/reference/tatoeba/
 data/reference/goethe/
+data/reference/kaikki/
 
 google-service-account.json

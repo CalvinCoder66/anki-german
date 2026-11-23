@@ -50,6 +50,21 @@
   color: #59636e;
 }
 
+/* Long meanings stop after a few words; the highlighted "…" expands them. */
+.more {
+  margin-left: 2px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #0b6bcb;
+  background: rgba(11, 107, 203, 0.12);
+  cursor: pointer;
+}
+
+.rest {
+  display: none;
+}
+
 .meta {
   margin-top: 8px;
   font-size: 15px;
@@ -71,8 +86,13 @@
   background: #1f2328;
 }
 
-.nightMode .target {
+.nightMode .target,
+.nightMode .more {
   color: #58a6ff;
+}
+
+.nightMode .more {
+  background: rgba(88, 166, 255, 0.16);
 }
 
 .nightMode .sep,

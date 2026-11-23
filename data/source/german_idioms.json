@@ -4,7 +4,7 @@
     "meaning": "I don't understand a thing; it's all Greek to me",
     "literal": "I only understand 'train station'",
     "level": 3.5,
-    "example": "Kannst du das noch mal erklären? Ich [verstehe nur Bahnhof].",
+    "example": "Kannst du das noch mal erklären? [Ich verstehe nur Bahnhof].",
     "example_en": "Can you explain that again? It's all Greek to me."
   },
   {
@@ -60,8 +60,8 @@
     "meaning": "to be lucky",
     "literal": "to have pig",
     "level": 3.5,
-    "example": "Ich [hatte Schwein]: Der letzte Bus hatte Verspätung.",
-    "example_en": "I got lucky: the last bus was running late."
+    "example": "Ich [hatte Schwein]: Der letzte Bus hatte Verspätung, also hab ich ihn noch gekriegt.",
+    "example_en": "I got lucky: the last bus was running late, so I still caught it."
   },
   {
     "idiom": "Das ist nicht mein Bier.",
@@ -129,7 +129,7 @@
   },
   {
     "idiom": "die Katze im Sack kaufen",
-    "meaning": "to buy something sight unseen",
+    "meaning": "to buy a pig in a poke; to buy something sight unseen",
     "literal": "to buy the cat in the bag",
     "level": 4.5,
     "example": "Ich will das Auto erst sehen – ich [kaufe] doch nicht [die Katze im Sack].",
@@ -169,7 +169,7 @@
   },
   {
     "idiom": "Butter bei die Fische!",
-    "meaning": "Get to the point! (casual, northern; deliberately ungrammatical)",
+    "meaning": "Get to the point! Out with it! Come clean! (casual, Low German-style bei + accusative)",
     "literal": "butter with the fish",
     "level": 5.0,
     "example": "Genug geredet – jetzt mal [Butter bei die Fische]: Was kostet das?",
@@ -209,7 +209,7 @@
   },
   {
     "idiom": "fix und fertig sein",
-    "meaning": "to be completely worn out",
+    "meaning": "to be completely worn out; to be emotionally shattered",
     "literal": "to be fixed and finished",
     "level": 3.5,
     "example": "Nach der Nachtschicht [bin] ich [fix und fertig].",
@@ -225,7 +225,7 @@
   },
   {
     "idiom": "Hand und Fuß haben",
-    "meaning": "to make sense; to be well thought out",
+    "meaning": "to make sense; to be well thought out (often negative: weder Hand noch Fuß haben)",
     "literal": "to have hand and foot",
     "level": 4.5,
     "example": "Dein Plan [hat Hand und Fuß].",
@@ -252,7 +252,7 @@
     "meaning": "That's a weight off my mind",
     "literal": "a stone falls from my heart",
     "level": 4.5,
-    "example": "Du bist gut angekommen? Da [fällt] mir [ein Stein vom Herzen].",
+    "example": "Du bist gut angekommen? Da [fällt mir ein Stein vom Herzen].",
     "example_en": "You got there safely? That's a weight off my mind."
   },
   {
@@ -284,7 +284,7 @@
     "meaning": "to be all ears",
     "literal": "to be all ear",
     "level": 3.5,
-    "example": "Erzähl schon, [ich bin ganz Ohr]!",
+    "example": "Erzähl schon, ich [bin ganz Ohr]!",
     "example_en": "Go on, tell me – I'm all ears!"
   },
   {

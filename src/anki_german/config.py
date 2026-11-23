@@ -12,6 +12,9 @@ CARDS_DIR = Path(__file__).resolve().parent / "cards"
 DATA_DIR = PROJECT_ROOT / "data"
 TATOEBA_DIR = DATA_DIR / "reference" / "tatoeba"
 GOETHE_DIR = DATA_DIR / "reference" / "goethe"
+# Hand corrections from reviewing cards: dropped sentences, fixed translations,
+# and meanings that Wiktionary lacks or gets wrong for the deck.
+CORRECTIONS_PATH = DATA_DIR / "source" / "german_corrections.json"
 IDIOMS_PATH = DATA_DIR / "source" / "german_idioms.json"
 SENTENCES_PATH = DATA_DIR / "state" / "german_sentences.jsonl"
 DECK_OUTPUT_PATH = DATA_DIR / "build" / "decks" / "german_tatoeba.apkg"
@@ -21,6 +24,11 @@ TATOEBA_FILES = {
     "eng_sentences.tsv.bz2": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences.tsv.bz2",
     "deu-eng_links.tsv.bz2": "https://downloads.tatoeba.org/exports/per_language/deu/deu-eng_links.tsv.bz2",
 }
+# English Wiktionary's German entries, extracted by kaikki.org (CC BY-SA). The
+# 100 MB download is reduced to a small word -> meaning file once, on fetch.
+KAIKKI_URL = "https://kaikki.org/dictionary/German/kaikki.org-dictionary-German.jsonl.gz"
+KAIKKI_PATH = DATA_DIR / "reference" / "kaikki" / "german.jsonl.gz"
+GLOSSES_PATH = DATA_DIR / "reference" / "kaikki" / "glosses.json"
 # Goethe-Institut word lists, published through the DWDS API. They are
 # copyrighted, so they stay in the gitignored download cache.
 GOETHE_FILES = {

@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import html
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 import genanki
+from wordfreq import zipf_frequency
 
 from .analysis import SentenceRecord, level_label
 from .config import CARDS_DIR, DECK_ID, DECK_NAME, DECK_OUTPUT_PATH, MODEL_ID, MODEL_NAME
@@ -57,7 +58,60 @@ def _model() -> genanki.Model:
     )
 
 
-def _fields(record: SentenceRecord) -> list[str]:
+def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
+    """English meaning of the target word; the parser sometimes capitalizes a
+    sentence-initial verb ("Amüsieren"), so other cases are tried too."""
+    if record.source != "tatoeba":
+        return ""  # idioms carry their own meaning
+    lemma = record.target_lemma
+    if gloss := _lookup(lemma, glosses, whole=True) or _lookup(lemma, glosses):
+        return _gloss_html(gloss)
+    # Compound nouns missing from Wiktionary (Lieblingshemd) show their parts.
+    # English for each part would often pick the wrong sense (Stunden "to defer"),
+    # so only the split is shown, choosing the one whose rarer part is most common
+    # (Handtasche + Dieb, not Hand + Taschendieb).
+    if lemma[:1].isupper():
+        splits = [
+            (stem, head)
+            for cut in range(3, len(lemma) - 2)
+            for link in ("", "s", "n", "e", "en", "es")
+            if lemma[:cut].endswith(link)
+            for stem, head in [(lemma[: cut - len(link)], lemma[cut:].capitalize())]
+            if len(stem) >= 3 and _lookup(stem, glosses) and _lookup(head, glosses)
+        ]
+        if splits:
+            stem, head = max(splits, key=lambda s: min(zipf_frequency(p, "de") for p in s))
+            return _gloss_html(f"{stem} + {head}")
+    return ""
+
+
+def _lookup(word: str, glosses: Mapping[str, str], *, whole: bool = False) -> str:
+    """First gloss among the word's case forms; with ``whole``, skip encyclopedic
+    ones, so "Englisch" finds "English" rather than a children's game."""
+    forms = (word, word.lower(), word.capitalize())
+    found = (glosses[f] for f in forms if f in glosses)
+    return next((g for g in found if not (whole and len(g.split("; ")[0]) > 100)), "")
+
+
+SHOWN_WORDS = 10
+# Tapping the highlighted "…" reveals the rest; no template script is needed,
+# so it works the same in Anki desktop, AnkiDroid, and AnkiMobile.
+_EXPAND = "this.nextElementSibling.style.display='inline';this.remove()"
+
+
+def _gloss_html(gloss: str) -> str:
+    words = gloss.split(" ")
+    shown, rest = " ".join(words[:SHOWN_WORDS]), " ".join(words[SHOWN_WORDS:])
+    body = html.escape(shown, quote=False)
+    if rest:
+        body += (
+            f'<span class="more" onclick="{_EXPAND}">…</span>'
+            f'<span class="rest"> {html.escape(rest, quote=False)}</span>'
+        )
+    return f'<div class="gloss">{body}</div>'
+
+
+def _fields(record: SentenceRecord, glosses: Mapping[str, str]) -> list[str]:
     source = (
         f'<a href="https://tatoeba.org/de/sentences/show/{record.id}">Tatoeba #{record.id}</a>'
         " · CC BY 2.0 FR"
@@ -66,7 +120,7 @@ def _fields(record: SentenceRecord) -> list[str]:
     )
     return [
         record.target_lemma,
-        record.target_display,
+        record.target_display + _gloss(record, glosses),
         record.html,
         html.escape(record.english, quote=False),
         f"{level_label(record.difficulty)} · {record.difficulty:.1f}",
@@ -83,7 +137,11 @@ def _tags(record: SentenceRecord) -> list[str]:
     return tags
 
 
-def build_deck(cards: list[SentenceRecord], output: Path = DECK_OUTPUT_PATH) -> Path:
+def build_deck(
+    cards: list[SentenceRecord],
+    output: Path = DECK_OUTPUT_PATH,
+    glosses: Mapping[str, str] | None = None,
+) -> Path:
     """Write the APKG. New cards keep the given order; each word's note keeps its GUID."""
     model = _model()
     deck = genanki.Deck(DECK_ID, DECK_NAME)
@@ -91,7 +149,7 @@ def build_deck(cards: list[SentenceRecord], output: Path = DECK_OUTPUT_PATH) -> 
         deck.add_note(
             genanki.Note(
                 model=model,
-                fields=_fields(record),
+                fields=_fields(record, glosses or {}),
                 tags=_tags(record),
                 guid=genanki.guid_for(f"german-{record.source}", record.target_lemma),
                 due=position,

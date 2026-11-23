@@ -1,15 +1,27 @@
-"""Download and read Tatoeba sentence pairs and the Goethe word lists."""
+"""Download and read Tatoeba sentence pairs, the Goethe word lists, and English meanings."""
 
 from __future__ import annotations
 
 import bz2
 import csv
+import gzip
+import json
+import re
 import urllib.request
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
-from .config import GOETHE_DIR, GOETHE_FILES, TATOEBA_DIR, TATOEBA_FILES
+from .config import (
+    CORRECTIONS_PATH,
+    GLOSSES_PATH,
+    GOETHE_DIR,
+    GOETHE_FILES,
+    KAIKKI_PATH,
+    KAIKKI_URL,
+    TATOEBA_DIR,
+    TATOEBA_FILES,
+)
 
 
 @dataclass(frozen=True)
@@ -23,6 +35,7 @@ def fetch_sources(*, force: bool = False) -> list[Path]:
     """Download missing source files into the gitignored reference cache."""
     targets = [(TATOEBA_DIR / name, url) for name, url in TATOEBA_FILES.items()]
     targets += [(GOETHE_DIR / f"{level}.csv", url) for level, url in GOETHE_FILES.items()]
+    targets.append((KAIKKI_PATH, KAIKKI_URL))
     written: list[Path] = []
     for path, url in targets:
         if path.exists() and not force:
@@ -32,7 +45,103 @@ def fetch_sources(*, force: bool = False) -> list[Path]:
         with urllib.request.urlopen(request, timeout=60) as response:
             path.write_bytes(response.read())
         written.append(path)
+    if force or KAIKKI_PATH in written or not GLOSSES_PATH.exists():
+        build_glossary(KAIKKI_PATH, GLOSSES_PATH)
+        written.append(GLOSSES_PATH)
     return written
+
+
+# Senses that only point at another word ("preterite of biegen") or are no longer
+# current English Wiktionary usage are left out.
+_SKIP_SENSE_TAGS = frozenset({"form-of", "alt-of", "obsolete", "archaic", "dated", "rare"})
+
+
+# "agent noun of schlagen" names a word without saying what it means, so the
+# glossary follows it one step to the base word's meaning.
+_DERIVED = re.compile(
+    r"^(?:gerund|agent noun|verbal noun|nominalization|diminutive|female equivalent) of (\S+)$"
+)
+
+
+@dataclass(frozen=True)
+class Glossary:
+    glosses: dict[str, str]
+    names: frozenset[str]  # only ever a person or place in Wiktionary (Eduard): not vocabulary
+
+
+def build_glossary(source: Path, output: Path) -> None:
+    """Reduce kaikki's German JSONL to card-sized English meanings and a list of names."""
+    common: dict[str, list[str]] = {}
+    proper: dict[str, list[str]] = {}
+    with gzip.open(source, "rt", encoding="utf-8") as handle:
+        for line in handle:
+            entry = json.loads(line)
+            bucket = proper if entry.get("pos") == "name" else common
+            meanings = bucket.setdefault(entry["word"], [])
+            for sense in entry.get("senses", []):
+                if _SKIP_SENSE_TAGS & set(sense.get("tags", [])):
+                    continue
+                # Card-sized: no (notes) or [grammar], at most three synonyms per sense.
+                gloss = re.sub(r"\s*(\([^)]*\)|\[[^\]]*\])", "", (sense.get("glosses") or [""])[0])
+                gloss = ", ".join(part.strip() for part in gloss.split(",")[:3]).strip()
+                if gloss and gloss not in meanings:
+                    meanings.append(gloss)
+    # A proper-name entry counts only when the word has nothing else: Latein the
+    # language yes, Nebelhorn the mountain no (it is also a foghorn). Names other
+    # than languages are not vocabulary.
+    names = sorted(
+        word
+        for word, meanings in proper.items()
+        if meanings and not common.get(word) and not any("language" in m for m in meanings)
+    )
+    for word, meanings in proper.items():
+        if meanings and not common.get(word):
+            common[word] = meanings
+    plain = {word: _join(meanings) for word, meanings in common.items() if meanings}
+
+    def resolve(meaning: str) -> str:
+        match = _DERIVED.match(meaning)
+        base = match and (plain.get(match[1]) or plain.get(match[1].lower()))
+        return f"{meaning}: {base.split('; ')[0]}" if base else meaning
+
+    glosses = {
+        word: _join([resolve(m) for m in meanings]) for word, meanings in common.items() if meanings
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        json.dumps({"glosses": glosses, "names": names}, ensure_ascii=False), encoding="utf-8"
+    )
+
+
+def _join(meanings: list[str]) -> str:
+    """Up to three senses of at most 100 characters each; a word with only
+    encyclopedic senses (Abitur) keeps its first one whole. Cards show the first
+    words and expand the rest on tap."""
+    short = [m for m in meanings if len(m) <= 100]
+    return "; ".join(short[:3]) if short else meanings[0]
+
+
+def load_glossary(path: Path = GLOSSES_PATH) -> Glossary:
+    if not path.exists():
+        return Glossary({}, frozenset())
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return Glossary(data["glosses"], frozenset(data["names"]))
+
+
+@dataclass(frozen=True)
+class Corrections:
+    drop_sentences: frozenset[int]
+    translations: dict[int, str]
+    meanings: dict[str, str]
+
+
+def load_corrections(path: Path = CORRECTIONS_PATH) -> Corrections:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return Corrections(
+        frozenset(data["drop_sentences"]),
+        {int(sentence_id): text for sentence_id, text in data["translations"].items()},
+        data["meanings"],
+    )
 
 
 def _read_sentences(path: Path) -> dict[int, str]:
