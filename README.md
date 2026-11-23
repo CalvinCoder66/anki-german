@@ -14,10 +14,8 @@ idioms.
   B2=4, C1=5, C2=6), so 3.5 means borderline B1/B2
 - Gives each card one target word, in a sentence whose other words are at or
   below your level; new cards arrive easiest first
-- Shows the target word's English meaning from Wiktionary (via
-  [kaikki.org](https://kaikki.org), CC BY-SA); compounds missing from it show
-  their parts (*Ski + Unfall*); long meanings show ten words and expand
-  when you tap the highlighted …
+- Shows the target word's English meaning on the back of the card (see
+  [Word meanings](#word-meanings))
 - Highlights both parts of separable verbs (*Ich **bog** rechts **ab***), and
   keeps modal particles and contractions (doch, mal, *hab's*) in sentences
   without ever making them the target
@@ -51,6 +49,37 @@ To study on your phone, sign in to a free AnkiWeb account in Anki desktop and
 press **Sync**, then sign in to the same account in AnkiDroid (free) or
 AnkiMobile (iOS). Later rebuilds reach your phone the same way.
 
+## Word meanings
+
+When you reveal a card, the highlighted word appears in its dictionary form
+with a short English meaning underneath:
+
+- Long meanings show their first ten words; tap the highlighted **…** to read
+  the rest.
+- Compound nouns that the dictionary lacks show how they split instead, such
+  as *Ski + Unfall*, so you can work out the meaning from the parts.
+- A few words have no meaning yet (about 6% at level 3.5); the sentence
+  translation above still gives the sense.
+- Idiom cards show a hand-written meaning and a literal translation instead;
+  all 38 idioms have been reviewed.
+
+> **Where this comes from, and how far it is checked.** Meanings are taken
+> automatically from English Wiktionary's German entries (via
+> [kaikki.org](https://kaikki.org), CC BY-SA), and sentence translations come
+> from [Tatoeba](https://tatoeba.org) volunteers. The tool also picks each
+> card's dictionary form automatically. A review of 250 sample cards
+> (about 5% of the deck) found mostly accurate translations but some
+> meanings in the wrong sense or under the wrong dictionary form; those are
+> corrected, but the rest of the deck has not been checked card by card.
+> Treat a meaning as a hint and trust the sentence translation when they
+> disagree.
+
+To fix a card, edit `data/source/german_corrections.json` and rebuild. It
+holds the hand corrections applied on every build: `meanings` replaces
+Wiktionary's meaning for a word, `translations` replaces a sentence's English
+(keyed by the Tatoeba ID shown on each card), and `drop_sentences` removes a
+sentence from the deck.
+
 ## Move up a level
 
 Rebuild with a higher level and import the new file:
@@ -81,13 +110,6 @@ separable particle:
   "example_en": "Now you're pulling my leg!"
 }
 ```
-
-## Fix a card
-
-`data/source/german_corrections.json` holds hand corrections, applied on every
-build: Tatoeba sentence IDs to drop (`drop_sentences`), better English for a
-sentence (`translations`, keyed by the Tatoeba ID shown on each card), and
-meanings that replace Wiktionary's for a word (`meanings`).
 
 ## How difficulty is graded
 
