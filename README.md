@@ -59,6 +59,25 @@ instead of duplicating them. Rebuilding alone does not change the open collectio
 AnkiConnect is needed for live-state workflows, not APKG rebuilding.
 To use a different dataset, follow [Replace the source](docs/workflows.md#replace-the-source).
 
+## German deck (Tatoeba)
+
+`anki-german` builds a separate German deck from Tatoeba sentence pairs.
+Levels use one continuous scale (A1=1 … B1=3, B2=4 … C2=6), so 3.5 means
+borderline B1/B2:
+
+```bash
+uv run anki-german fetch            # Tatoeba + Goethe A1-B1 lists (gitignored cache)
+uv run anki-german analyze          # grade ~240k sentences, a few minutes
+uv run anki-german build --level 3.5
+```
+
+Import `data/build/decks/german_tatoeba.apkg`. Each card teaches one target word,
+from half a level below yours up to one above, in a sentence whose other words
+are at or below your level; new cards arrive easiest first. Raise `--level` and rebuild to climb: notes are keyed by
+word, so existing cards update instead of duplicating. Separable verbs
+highlight both parts; modal particles and contractions stay in sentences but
+are never targets.
+
 ## How it works
 
 Canonical records in `data/source/` are enriched, given audio, and rebuilt into

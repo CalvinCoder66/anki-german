@@ -23,5 +23,10 @@ data/state/character_frequency.json
 data/state/tutor_known.json
 data/state/tutor_log.jsonl
 data/state/tutor_chat/
+data/state/german_sentences.jsonl
+
+# Downloaded German sources (Goethe lists are copyrighted; Tatoeba is large)
+data/reference/tatoeba/
+data/reference/goethe/
 
 google-service-account.json
