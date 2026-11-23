@@ -61,6 +61,8 @@ def _fields(record: SentenceRecord) -> list[str]:
     source = (
         f'<a href="https://tatoeba.org/de/sentences/show/{record.id}">Tatoeba #{record.id}</a>'
         " · CC BY 2.0 FR"
+        if record.source == "tatoeba"
+        else "Redewendung"
     )
     return [
         record.target_lemma,
@@ -74,7 +76,7 @@ def _fields(record: SentenceRecord) -> list[str]:
 
 
 def _tags(record: SentenceRecord) -> list[str]:
-    tags = ["source::tatoeba", f"level::{level_label(record.difficulty).rstrip('+')}"]
+    tags = [f"source::{record.source}", f"level::{level_label(record.difficulty).rstrip('+')}"]
     tags += [f"grammar::{name}" for name in record.grammar]
     if record.separable:
         tags.append("separable")
@@ -91,7 +93,7 @@ def build_deck(cards: list[SentenceRecord], output: Path = DECK_OUTPUT_PATH) -> 
                 model=model,
                 fields=_fields(record),
                 tags=_tags(record),
-                guid=genanki.guid_for("german-tatoeba", record.target_lemma),
+                guid=genanki.guid_for(f"german-{record.source}", record.target_lemma),
                 due=position,
             )
         )

@@ -43,6 +43,13 @@
   border: 1px solid #c2410c;
 }
 
+.gloss {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #59636e;
+}
+
 .meta {
   margin-top: 8px;
   font-size: 15px;
@@ -74,6 +81,7 @@
   border-color: #fb923c;
 }
 
+.nightMode .gloss,
 .nightMode .meta,
 .nightMode .source a {
   color: #9198a1;

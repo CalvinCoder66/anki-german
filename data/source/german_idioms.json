@@ -1,0 +1,306 @@
+[
+  {
+    "idiom": "Ich verstehe nur Bahnhof.",
+    "meaning": "I don't understand a thing; it's all Greek to me",
+    "literal": "I only understand 'train station'",
+    "level": 3.5,
+    "example": "Kannst du das noch mal erklären? Ich [verstehe nur Bahnhof].",
+    "example_en": "Can you explain that again? It's all Greek to me."
+  },
+  {
+    "idiom": "Tomaten auf den Augen haben",
+    "meaning": "to miss something obvious",
+    "literal": "to have tomatoes on your eyes",
+    "level": 4.0,
+    "example": "Du [hast] wohl [Tomaten auf den Augen]! Der Schlüssel liegt direkt vor dir.",
+    "example_en": "Are you blind? The key is right in front of you."
+  },
+  {
+    "idiom": "Das ist mir Wurst (Wurscht).",
+    "meaning": "I don't care; it's all the same to me",
+    "literal": "that's sausage to me",
+    "level": 3.5,
+    "example": "Pizza oder Pasta? [Das ist mir Wurst].",
+    "example_en": "Pizza or pasta? I don't mind either way."
+  },
+  {
+    "idiom": "jemandem einen Bären {auf}binden",
+    "meaning": "to pull someone's leg; to tell someone a tall tale",
+    "literal": "to tie a bear onto someone",
+    "level": 4.5,
+    "example": "Jetzt [bindest] du mir aber [einen Bären] [{auf}]!",
+    "example_en": "Now you're pulling my leg!"
+  },
+  {
+    "idiom": "Da wird ja der Hund in der Pfanne verrückt!",
+    "meaning": "That's unbelievable!",
+    "literal": "the dog in the frying pan goes crazy",
+    "level": 5.0,
+    "example": "Der Zug fällt schon wieder aus? [Da wird ja der Hund in der Pfanne verrückt]!",
+    "example_en": "The train's cancelled again? That's unbelievable!"
+  },
+  {
+    "idiom": "jemandem die Daumen drücken",
+    "meaning": "to keep your fingers crossed for someone",
+    "literal": "to press your thumbs for someone",
+    "level": 3.0,
+    "example": "Morgen ist meine Prüfung – [drück] mir [die Daumen]!",
+    "example_en": "My exam is tomorrow – keep your fingers crossed for me!"
+  },
+  {
+    "idiom": "Hals- und Beinbruch!",
+    "meaning": "Break a leg! Good luck!",
+    "literal": "neck and leg break",
+    "level": 3.5,
+    "example": "Viel Erfolg beim Vorstellungsgespräch – [Hals- und Beinbruch]!",
+    "example_en": "Good luck at the interview – break a leg!"
+  },
+  {
+    "idiom": "Schwein haben",
+    "meaning": "to be lucky",
+    "literal": "to have pig",
+    "level": 3.5,
+    "example": "Ich [hatte Schwein]: Der letzte Bus hatte Verspätung.",
+    "example_en": "I got lucky: the last bus was running late."
+  },
+  {
+    "idiom": "Das ist nicht mein Bier.",
+    "meaning": "That's not my problem / business",
+    "literal": "that's not my beer",
+    "level": 4.0,
+    "example": "Wie er das Problem löst, [ist nicht mein Bier].",
+    "example_en": "How he solves the problem is none of my business."
+  },
+  {
+    "idiom": "auf dem Schlauch stehen",
+    "meaning": "to be slow on the uptake; to not get it",
+    "literal": "to stand on the hose",
+    "level": 4.0,
+    "example": "Sorry, ich [stehe] gerade [auf dem Schlauch]. Was meinst du?",
+    "example_en": "Sorry, I'm not getting it right now. What do you mean?"
+  },
+  {
+    "idiom": "Ich glaub, mein Schwein pfeift!",
+    "meaning": "I don't believe it!",
+    "literal": "I think my pig is whistling",
+    "level": 4.5,
+    "example": "Du hast die ganze Torte allein gegessen? [Ich glaub, mein Schwein pfeift]!",
+    "example_en": "You ate the whole cake by yourself? I don't believe it!"
+  },
+  {
+    "idiom": "die Nase voll haben",
+    "meaning": "to be fed up",
+    "literal": "to have your nose full",
+    "level": 3.5,
+    "example": "Ich [habe die Nase voll] von diesem Regen.",
+    "example_en": "I'm fed up with this rain."
+  },
+  {
+    "idiom": "jemandem auf den Keks gehen",
+    "meaning": "to get on someone's nerves",
+    "literal": "to go on someone's biscuit",
+    "level": 4.0,
+    "example": "Dein ständiges Jammern [geht] mir echt [auf den Keks].",
+    "example_en": "Your constant moaning is really getting on my nerves."
+  },
+  {
+    "idiom": "ins Fettnäpfchen treten",
+    "meaning": "to put your foot in it",
+    "literal": "to step into the little pot of fat",
+    "level": 4.5,
+    "example": "Mit der Frage nach ihrem Alter bin ich voll [ins Fettnäpfchen getreten].",
+    "example_en": "I really put my foot in it by asking her age."
+  },
+  {
+    "idiom": "keinen Bock haben",
+    "meaning": "to not feel like it; can't be bothered (casual)",
+    "literal": "to have no billy goat",
+    "level": 3.5,
+    "example": "Ich [hab] heute echt [keinen Bock] auf Sport.",
+    "example_en": "I really can't be bothered with sport today."
+  },
+  {
+    "idiom": "etwas auf die lange Bank schieben",
+    "meaning": "to put something off; to procrastinate",
+    "literal": "to push something onto the long bench",
+    "level": 4.5,
+    "example": "[Schieb] die Steuererklärung nicht [auf die lange Bank]!",
+    "example_en": "Don't keep putting off your tax return!"
+  },
+  {
+    "idiom": "die Katze im Sack kaufen",
+    "meaning": "to buy something sight unseen",
+    "literal": "to buy the cat in the bag",
+    "level": 4.5,
+    "example": "Ich will das Auto erst sehen – ich [kaufe] doch nicht [die Katze im Sack].",
+    "example_en": "I want to see the car first – I'm not buying it sight unseen."
+  },
+  {
+    "idiom": "um den heißen Brei {herum}reden",
+    "meaning": "to beat around the bush",
+    "literal": "to talk around the hot porridge",
+    "level": 4.5,
+    "example": "[Red] nicht [um den heißen Brei] [{herum}] – was ist los?",
+    "example_en": "Stop beating around the bush – what's going on?"
+  },
+  {
+    "idiom": "Alles in Butter.",
+    "meaning": "Everything's fine",
+    "literal": "everything in butter",
+    "level": 3.5,
+    "example": "Keine Sorge, es ist [alles in Butter].",
+    "example_en": "Don't worry, everything's fine."
+  },
+  {
+    "idiom": "einen Kater haben",
+    "meaning": "to have a hangover",
+    "literal": "to have a tomcat",
+    "level": 3.0,
+    "example": "Die Party ging bis vier Uhr, heute [hab] ich [einen Kater].",
+    "example_en": "The party went on until four; today I've got a hangover."
+  },
+  {
+    "idiom": "Nicht der Rede wert.",
+    "meaning": "Don't mention it",
+    "literal": "not worth talking about",
+    "level": 3.5,
+    "example": "Danke für deine Hilfe! – Ach, [nicht der Rede wert].",
+    "example_en": "Thanks for your help! – Oh, don't mention it."
+  },
+  {
+    "idiom": "Butter bei die Fische!",
+    "meaning": "Get to the point! (casual, northern; deliberately ungrammatical)",
+    "literal": "butter with the fish",
+    "level": 5.0,
+    "example": "Genug geredet – jetzt mal [Butter bei die Fische]: Was kostet das?",
+    "example_en": "Enough talk – let's get to the point: how much is it?"
+  },
+  {
+    "idiom": "sich zum Affen machen",
+    "meaning": "to make a fool of yourself",
+    "literal": "to make yourself into a monkey",
+    "level": 4.0,
+    "example": "[Mach] dich nicht [zum Affen]!",
+    "example_en": "Don't make a fool of yourself!"
+  },
+  {
+    "idiom": "Ende gut, alles gut.",
+    "meaning": "All's well that ends well",
+    "literal": "end good, everything good",
+    "level": 3.0,
+    "example": "Wir haben den Zug doch noch erwischt. [Ende gut, alles gut]!",
+    "example_en": "We caught the train after all. All's well that ends well!"
+  },
+  {
+    "idiom": "Da steppt der Bär.",
+    "meaning": "That's where the party is; it'll be lively",
+    "literal": "the bear is tap-dancing there",
+    "level": 4.5,
+    "example": "Komm am Samstag mit, [da steppt der Bär]!",
+    "example_en": "Come along on Saturday, it's going to be wild!"
+  },
+  {
+    "idiom": "zwei Fliegen mit einer Klappe schlagen",
+    "meaning": "to kill two birds with one stone",
+    "literal": "to swat two flies with one swatter",
+    "level": 4.0,
+    "example": "Wenn ich auf dem Heimweg einkaufe, [schlage] ich [zwei Fliegen mit einer Klappe].",
+    "example_en": "If I shop on the way home, I kill two birds with one stone."
+  },
+  {
+    "idiom": "fix und fertig sein",
+    "meaning": "to be completely worn out",
+    "literal": "to be fixed and finished",
+    "level": 3.5,
+    "example": "Nach der Nachtschicht [bin] ich [fix und fertig].",
+    "example_en": "After the night shift I'm completely worn out."
+  },
+  {
+    "idiom": "unter vier Augen",
+    "meaning": "in private; one-to-one",
+    "literal": "under four eyes",
+    "level": 4.0,
+    "example": "Können wir kurz [unter vier Augen] reden?",
+    "example_en": "Can we have a quick word in private?"
+  },
+  {
+    "idiom": "Hand und Fuß haben",
+    "meaning": "to make sense; to be well thought out",
+    "literal": "to have hand and foot",
+    "level": 4.5,
+    "example": "Dein Plan [hat Hand und Fuß].",
+    "example_en": "Your plan is well thought out."
+  },
+  {
+    "idiom": "Abwarten und Tee trinken.",
+    "meaning": "Wait and see",
+    "literal": "wait and drink tea",
+    "level": 4.0,
+    "example": "Mehr können wir nicht tun – jetzt heißt es [abwarten und Tee trinken].",
+    "example_en": "There's nothing more we can do – now we just have to wait and see."
+  },
+  {
+    "idiom": "ein Katzensprung",
+    "meaning": "a stone's throw; very close",
+    "literal": "a cat's jump",
+    "level": 4.0,
+    "example": "Der Bahnhof ist nur [einen Katzensprung] von hier entfernt.",
+    "example_en": "The station is just a stone's throw from here."
+  },
+  {
+    "idiom": "Mir fällt ein Stein vom Herzen.",
+    "meaning": "That's a weight off my mind",
+    "literal": "a stone falls from my heart",
+    "level": 4.5,
+    "example": "Du bist gut angekommen? Da [fällt] mir [ein Stein vom Herzen].",
+    "example_en": "You got there safely? That's a weight off my mind."
+  },
+  {
+    "idiom": "auf Wolke sieben schweben",
+    "meaning": "to be on cloud nine",
+    "literal": "to float on cloud seven",
+    "level": 4.5,
+    "example": "Seit sie verliebt ist, [schwebt] sie [auf Wolke sieben].",
+    "example_en": "Ever since she fell in love, she's been on cloud nine."
+  },
+  {
+    "idiom": "tote Hose",
+    "meaning": "nothing going on; dead (casual)",
+    "literal": "dead trousers",
+    "level": 4.5,
+    "example": "Am Sonntag ist hier echt [tote Hose].",
+    "example_en": "On Sundays it's really dead around here."
+  },
+  {
+    "idiom": "Das geht auf meine Kappe.",
+    "meaning": "That's on me (I'll pay / I take the blame)",
+    "literal": "that goes on my cap",
+    "level": 4.5,
+    "example": "Lass mal, das Essen [geht auf meine Kappe].",
+    "example_en": "Leave it, dinner's on me."
+  },
+  {
+    "idiom": "ganz Ohr sein",
+    "meaning": "to be all ears",
+    "literal": "to be all ear",
+    "level": 3.5,
+    "example": "Erzähl schon, [ich bin ganz Ohr]!",
+    "example_en": "Go on, tell me – I'm all ears!"
+  },
+  {
+    "idiom": "Das Leben ist kein Ponyhof.",
+    "meaning": "Life isn't always easy; life's not a bed of roses",
+    "literal": "life is not a pony farm",
+    "level": 4.0,
+    "example": "Tja, [das Leben ist kein Ponyhof].",
+    "example_en": "Well, life's not a bed of roses."
+  },
+  {
+    "idiom": "Lügen haben kurze Beine.",
+    "meaning": "Lies don't get you far; the truth comes out",
+    "literal": "lies have short legs",
+    "level": 4.0,
+    "example": "Er wurde sofort erwischt – [Lügen haben kurze Beine].",
+    "example_en": "He was caught straight away – lies don't get you far."
+  }
+]
