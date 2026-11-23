@@ -65,7 +65,7 @@ def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
         return ""  # idioms carry their own meaning
     lemma = record.target_lemma
     if gloss := _lookup(lemma, glosses, whole=True) or _lookup(lemma, glosses):
-        return f'<div class="gloss">{html.escape(gloss, quote=False)}</div>'
+        return _gloss_html(gloss)
     # Compound nouns missing from Wiktionary (Lieblingshemd) show their parts.
     # English for each part would often pick the wrong sense (Stunden "to defer"),
     # so only the split is shown, choosing the one whose rarer part is most common
@@ -81,15 +81,34 @@ def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
         ]
         if splits:
             stem, head = max(splits, key=lambda s: min(zipf_frequency(p, "de") for p in s))
-            return f'<div class="gloss">{html.escape(f"{stem} + {head}", quote=False)}</div>'
+            return _gloss_html(f"{stem} + {head}")
     return ""
 
 
 def _lookup(word: str, glosses: Mapping[str, str], *, whole: bool = False) -> str:
-    """First gloss among the word's case forms; with ``whole``, skip cut-down ones."""
+    """First gloss among the word's case forms; with ``whole``, skip encyclopedic
+    ones, so "Englisch" finds "English" rather than a children's game."""
     forms = (word, word.lower(), word.capitalize())
     found = (glosses[f] for f in forms if f in glosses)
-    return next((g for g in found if not (whole and g.endswith("…"))), "")
+    return next((g for g in found if not (whole and len(g.split("; ")[0]) > 100)), "")
+
+
+SHOWN_WORDS = 10
+# Tapping the highlighted "…" reveals the rest; no template script is needed,
+# so it works the same in Anki desktop, AnkiDroid, and AnkiMobile.
+_EXPAND = "this.nextElementSibling.style.display='inline';this.remove()"
+
+
+def _gloss_html(gloss: str) -> str:
+    words = gloss.split(" ")
+    shown, rest = " ".join(words[:SHOWN_WORDS]), " ".join(words[SHOWN_WORDS:])
+    body = html.escape(shown, quote=False)
+    if rest:
+        body += (
+            f'<span class="more" onclick="{_EXPAND}">…</span>'
+            f'<span class="rest"> {html.escape(rest, quote=False)}</span>'
+        )
+    return f'<div class="gloss">{body}</div>'
 
 
 def _fields(record: SentenceRecord, glosses: Mapping[str, str]) -> list[str]:

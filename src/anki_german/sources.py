@@ -114,20 +114,11 @@ def build_glossary(source: Path, output: Path) -> None:
 
 
 def _join(meanings: list[str]) -> str:
-    """Up to three short senses, stopping before about 100 characters.
-
-    A word with only encyclopedic senses (Abitur) gets its first one cut at a
-    word boundary and marked with "…".
-    """
+    """Up to three senses of at most 100 characters each; a word with only
+    encyclopedic senses (Abitur) keeps its first one whole. Cards show the first
+    words and expand the rest on tap."""
     short = [m for m in meanings if len(m) <= 100]
-    if not short:
-        return meanings[0][:100].rsplit(" ", 1)[0].rstrip(",;") + "…"
-    text = short[0]
-    for meaning in short[1:3]:
-        if len(text) + len(meaning) > 100:
-            break
-        text += f"; {meaning}"
-    return text
+    return "; ".join(short[:3]) if short else meanings[0]
 
 
 def load_glossary(path: Path = GLOSSES_PATH) -> Glossary:

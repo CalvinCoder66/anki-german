@@ -230,7 +230,7 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
         "amüsieren": "a; b; c",
         "Kuh": "cow, cattle, heifer",
         "Spiel": "game",
-        "Abitur": "final exams " + "taken by pupils " * 5 + "taken…",
+        "Abitur": ("final exams " + "taken by pupils " * 10).strip(),
         "Nebelhorn": "foghorn",
         "Eduard": "a male given name",
         "Latein": "Latin language",
@@ -246,6 +246,7 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
         _record(1, "Amüsieren", 3.0),
         replace(_record(2, "Kater", 3.0), source="idiom"),
         _record(3, "Handtaschendieb", 3.5),
+        _record(4, "Abitur", 3.0),
     ]
     fields = [
         row[3].split("\x1f")
@@ -254,6 +255,14 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
     assert fields[0][1] == 'Amüsieren<div class="gloss">a; b; c</div>'
     assert "gloss" not in fields[1][1]  # idioms carry their own meaning
     assert fields[2][1] == 'Handtaschendieb<div class="gloss">Handtasche + Dieb</div>'
+    # Long meanings show ten words; the rest waits behind a tappable "…".
+    shown, more, rest = re.match(
+        r'Abitur<div class="gloss">(.*?)<span class="more" onclick="[^"]+">…</span>'
+        r'<span class="rest"> (.*)</span></div>$',
+        fields[3][1],
+    ).group(1, 0, 2)
+    assert shown == "final exams taken by pupils taken by pupils taken by"
+    assert f"{shown} {rest}" == glosses["Abitur"]
 
 
 def test_idioms_render_their_markup_and_include_the_requested_ones():

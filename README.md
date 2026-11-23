@@ -16,7 +16,8 @@ idioms.
   below your level; new cards arrive easiest first
 - Shows the target word's English meaning from Wiktionary (via
   [kaikki.org](https://kaikki.org), CC BY-SA); compounds missing from it show
-  their parts (*Skiunfall: ski + accident*)
+  their parts (*Ski + Unfall*); long meanings show ten words and expand
+  when you tap the highlighted …
 - Highlights both parts of separable verbs (*Ich **bog** rechts **ab***), and
   keeps modal particles and contractions (doch, mal, *hab's*) in sentences
   without ever making them the target
