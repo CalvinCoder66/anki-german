@@ -16,6 +16,8 @@ GOETHE_DIR = DATA_DIR / "reference" / "goethe"
 # and meanings that Wiktionary lacks or gets wrong for the deck.
 CORRECTIONS_PATH = DATA_DIR / "source" / "german_corrections.json"
 IDIOMS_PATH = DATA_DIR / "source" / "german_idioms.json"
+# B2+ words met in the Frieren – Präludium preview, with new example sentences.
+PRAELUDIUM_PATH = DATA_DIR / "source" / "german_praeludium.json"
 SENTENCES_PATH = DATA_DIR / "state" / "german_sentences.jsonl"
 DECK_OUTPUT_PATH = DATA_DIR / "build" / "decks" / "german_tatoeba.apkg"
 

@@ -9,9 +9,9 @@ from dataclasses import replace
 import typer
 
 from .analysis import LemmaLevels, SentenceRecord, analyze, level_label
-from .config import DECK_OUTPUT_PATH, SENTENCES_PATH
+from .config import DECK_OUTPUT_PATH, IDIOMS_PATH, PRAELUDIUM_PATH, SENTENCES_PATH
 from .deck import build_deck, select_cards
-from .idioms import load_idioms
+from .phrases import load_phrases
 from .sources import (
     fetch_sources,
     load_corrections,
@@ -65,7 +65,7 @@ def build(
     limit: int | None = typer.Option(None, help="Keep only the easiest N cards."),
     dry_run: bool = typer.Option(False, help="Show the selection without writing the APKG."),
 ) -> None:
-    """Pick one sentence per new word for LEVEL, add the idioms, and write the APKG."""
+    """Pick one sentence per new word for LEVEL, add the phrase lists, and write the APKG."""
     if not SENTENCES_PATH.exists():
         raise typer.BadParameter("Run `anki-german fetch` and `anki-german analyze` first.")
     with SENTENCES_PATH.open(encoding="utf-8") as handle:
@@ -76,9 +76,14 @@ def build(
         for r in records
         if r.id not in fixes.drop_sentences
     ]
-    # Idioms are always included and slot in among the sentences by level.
+    # Hand-written phrases are always included and slot in among the sentences
+    # by level. A phrase's head word ("jemanden bewirten") gets no second,
+    # Tatoeba card.
+    phrases = load_phrases(IDIOMS_PATH, "idiom") + load_phrases(PRAELUDIUM_PATH, "praeludium")
+    covered = {p.target_lemma.split()[-1].strip(".!?") for p in phrases}
+    sentences = [r for r in records if r.target_lemma not in covered]
     cards = sorted(
-        select_cards(records, level=level, span=span, limit=limit) + load_idioms(),
+        select_cards(sentences, level=level, span=span, limit=limit) + phrases,
         key=lambda r: (r.difficulty, r.target_lemma),
     )
     typer.echo(f"{len(cards):,} cards for level {level} ({level_label(level)})")

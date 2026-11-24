@@ -19,7 +19,9 @@ idioms.
 - Highlights both parts of separable verbs (*Ich **bog** rechts **ab***), and
   keeps modal particles and contractions (doch, mal, *hab's*) in sentences
   without ever making them the target
-- Adds the everyday idioms in `data/source/german_idioms.json`
+- Adds the everyday idioms in `data/source/german_idioms.json` and B2–C1
+  vocabulary from *Frieren – Präludium* in `data/source/german_praeludium.json`
+  (see [Hand-written phrases](#hand-written-phrases))
 
 ## Start
 
@@ -60,8 +62,8 @@ with a short English meaning underneath:
   as *Ski + Unfall*, so you can work out the meaning from the parts.
 - A few words have no meaning yet (about 6% at level 3.5); the sentence
   translation above still gives the sense.
-- Idiom cards show a hand-written meaning and a literal translation instead;
-  all 38 idioms have been reviewed.
+- Idiom and novel-vocabulary cards show a hand-written meaning instead, with a
+  literal translation for figurative phrases; both lists have been reviewed.
 
 > **Where this comes from, and how far it is checked.** Meanings are taken
 > automatically from English Wiktionary's German entries (via
@@ -93,16 +95,25 @@ existing cards and keeps your review history instead of duplicating them.
 `--span` sets how far above your level targets may reach (default 1.0), and
 `--limit` keeps only the easiest N sentences.
 
-## Add idioms
+## Hand-written phrases
 
-Edit `data/source/german_idioms.json` and rebuild. Each entry has the idiom, an
-English meaning, a literal translation, a level, and an example sentence. In
-`example` (and `idiom`), `[...]` marks the idiom's words and `{...}` a
+Two lists are always added, slotted in among the sentences by level:
+
+- `data/source/german_idioms.json`: everyday idioms (*Ich verstehe nur Bahnhof*).
+- `data/source/german_praeludium.json`: about 100 B2–C1 words and phrases met
+  in the preview of the novel *Frieren – Präludium* (levels 3.5–5.5). The
+  example sentences are new and everyday, with no names or plot, so they
+  spoil nothing; the cards are tagged `source::praeludium`.
+
+A word that one of these lists covers gets no second, Tatoeba card. To add an
+entry, edit the file and rebuild. Each entry has the phrase, an English
+meaning, an optional literal translation, a level, and an example sentence. In
+`example` (and `phrase`), `[...]` marks the target words and `{...}` a
 separable particle:
 
 ```json
 {
-  "idiom": "jemandem einen Bären {auf}binden",
+  "phrase": "jemandem einen Bären {auf}binden",
   "meaning": "to pull someone's leg; to tell someone a tall tale",
   "literal": "to tie a bear onto someone",
   "level": 4.5,

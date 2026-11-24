@@ -62,7 +62,7 @@ def _gloss(record: SentenceRecord, glosses: Mapping[str, str]) -> str:
     """English meaning of the target word; the parser sometimes capitalizes a
     sentence-initial verb ("Amüsieren"), so other cases are tried too."""
     if record.source != "tatoeba":
-        return ""  # idioms carry their own meaning
+        return ""  # hand-written phrases carry their own meaning
     lemma = record.target_lemma
     if gloss := _lookup(lemma, glosses, whole=True) or _lookup(lemma, glosses):
         return _gloss_html(gloss)
@@ -111,12 +111,18 @@ def _gloss_html(gloss: str) -> str:
     return f'<div class="gloss">{body}</div>'
 
 
+PHRASE_SOURCES = {
+    "idiom": "Redewendung",
+    "praeludium": "Wortschatz aus „Frieren – Präludium“ · eigener Beispielsatz",
+}
+
+
 def _fields(record: SentenceRecord, glosses: Mapping[str, str]) -> list[str]:
     source = (
         f'<a href="https://tatoeba.org/de/sentences/show/{record.id}">Tatoeba #{record.id}</a>'
         " · CC BY 2.0 FR"
         if record.source == "tatoeba"
-        else "Redewendung"
+        else PHRASE_SOURCES[record.source]
     )
     return [
         record.target_lemma,
