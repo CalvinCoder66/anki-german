@@ -102,7 +102,7 @@ class SentenceRecord:
     support_level: float
     words: int
     grammar: list[str] = field(default_factory=list)
-    source: str = "tatoeba"  # or "idiom"
+    source: str = "tatoeba"  # or a phrase list: "idiom", "praeludium"
 
     @property
     def grammar_level(self) -> float:

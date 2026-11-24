@@ -14,8 +14,9 @@ from anki_german.analysis import (
     level_label,
     load_nlp,
 )
+from anki_german.config import IDIOMS_PATH, PRAELUDIUM_PATH
 from anki_german.deck import build_deck, select_cards
-from anki_german.idioms import load_idioms
+from anki_german.phrases import load_phrases
 from anki_german.sources import SentencePair, build_glossary, load_glossary
 
 
@@ -265,10 +266,13 @@ def test_glossary_keeps_current_meanings_and_cards_show_them(tmp_path):
     assert f"{shown} {rest}" == glosses["Abitur"]
 
 
-def test_idioms_render_their_markup_and_include_the_requested_ones():
-    idioms = {r.target_lemma: r for r in load_idioms()}
+def test_phrase_lists_render_their_markup_and_include_the_requested_idioms():
+    idiom_list = load_phrases(IDIOMS_PATH, "idiom")
+    idioms = {r.target_lemma: r for r in idiom_list}
+    novel = load_phrases(PRAELUDIUM_PATH, "praeludium")
 
-    assert len(idioms) == len(load_idioms())
+    assert len(idioms) == len(idiom_list)
+    assert len({r.target_lemma for r in novel}) == len(novel)
     assert {
         "Ich verstehe nur Bahnhof.",
         "Tomaten auf den Augen haben",
@@ -276,10 +280,13 @@ def test_idioms_render_their_markup_and_include_the_requested_ones():
         "jemandem einen Bären aufbinden",
         "Da wird ja der Hund in der Pfanne verrückt!",
     } <= set(idioms)
-    for record in idioms.values():
+    for record in [*idioms.values(), *novel]:
         assert not re.search(r"[\[\]{}]", record.german + record.html + record.target_display)
         assert '<b class="target">' in record.html
         assert 1.0 <= record.target_level <= 6.0
     bear = idioms["jemandem einen Bären aufbinden"]
     assert bear.separable
     assert '<b class="target"><span class="sep">auf</span></b>' in bear.html
+    # "literal" is optional; without it the meaning stands alone.
+    calm = next(r for r in novel if r.target_lemma == "allmählich")
+    assert calm.target_display.endswith('<div class="gloss">gradually; slowly but surely</div>')

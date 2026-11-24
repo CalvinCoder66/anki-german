@@ -1,0 +1,737 @@
+[
+  {
+    "phrase": "allmählich",
+    "meaning": "gradually; slowly but surely",
+    "level": 4.0,
+    "example": "Es wird [allmählich] dunkel, lass uns nach Hause gehen.",
+    "example_en": "It's slowly getting dark, let's go home."
+  },
+  {
+    "phrase": "möglicherweise",
+    "meaning": "possibly, perhaps",
+    "level": 4.0,
+    "example": "[Möglicherweise] kommt der Zug heute etwas später.",
+    "example_en": "The train may be a bit late today."
+  },
+  {
+    "phrase": "mittlerweile",
+    "meaning": "by now; meanwhile",
+    "level": 4.0,
+    "example": "Ich habe mich [mittlerweile] an das frühe Aufstehen gewöhnt.",
+    "example_en": "By now I've got used to getting up early."
+  },
+  {
+    "phrase": "kitzeln",
+    "meaning": "to tickle",
+    "level": 4.0,
+    "example": "Die Sonne [kitzelte] mich an der Nase, und ich musste niesen.",
+    "example_en": "The sun tickled my nose and I had to sneeze."
+  },
+  {
+    "phrase": "blenden",
+    "meaning": "to dazzle, to blind (with light)",
+    "level": 4.0,
+    "example": "Das grelle Licht [blendete] mich, als ich die Tür öffnete.",
+    "example_en": "The harsh light dazzled me when I opened the door."
+  },
+  {
+    "phrase": "verschlafen",
+    "meaning": "(adj.) sleepy, still half asleep; (verb) to oversleep",
+    "level": 4.0,
+    "example": "Am Sonntagmorgen bin ich immer ganz [verschlafen].",
+    "example_en": "On Sunday mornings I'm always still half asleep."
+  },
+  {
+    "phrase": "schleppen",
+    "meaning": "to lug, to drag (something heavy)",
+    "level": 4.0,
+    "example": "Ich musste die schweren Koffer allein in den vierten Stock [schleppen].",
+    "example_en": "I had to lug the heavy suitcases up to the fourth floor on my own."
+  },
+  {
+    "phrase": "verlegen",
+    "meaning": "(adj.) embarrassed, sheepish; (verb) to misplace, to postpone",
+    "level": 4.0,
+    "example": "Er lächelte [verlegen], als alle ihm gratulierten.",
+    "example_en": "He smiled sheepishly when everyone congratulated him."
+  },
+  {
+    "phrase": "jemanden {auf}muntern",
+    "meaning": "to cheer someone up",
+    "level": 4.0,
+    "example": "Komm, ich lade dich auf ein Eis ein, das [muntert] dich [{auf}].",
+    "example_en": "Come on, I'll buy you an ice cream, that'll cheer you up."
+  },
+  {
+    "phrase": "es nicht übertreiben",
+    "meaning": "to not overdo it",
+    "level": 4.0,
+    "example": "Lern ruhig viel, aber [übertreib es nicht].",
+    "example_en": "Study as much as you like, but don't overdo it."
+  },
+  {
+    "phrase": "sich etwas {vor}nehmen",
+    "meaning": "to resolve to do something, to plan",
+    "level": 4.0,
+    "example": "Ich habe [mir {vor}genommen], mehr Sport zu machen.",
+    "example_en": "I've resolved to do more exercise."
+  },
+  {
+    "phrase": "{zurecht}kommen",
+    "meaning": "to cope, to manage",
+    "level": 4.0,
+    "example": "[Kommst] du allein [{zurecht}], oder soll ich dir helfen?",
+    "example_en": "Can you manage on your own, or shall I help you?"
+  },
+  {
+    "phrase": "nicht zögern, etwas zu tun",
+    "meaning": "to not hesitate to do something",
+    "level": 4.0,
+    "example": "Wenn du Fragen hast, [zögere nicht], mich anzurufen.",
+    "example_en": "If you have questions, don't hesitate to call me."
+  },
+  {
+    "phrase": "Hauptsache …",
+    "meaning": "the main thing is …; as long as …",
+    "level": 3.5,
+    "example": "Egal, wie das Wetter wird – [Hauptsache], wir sind zusammen.",
+    "example_en": "Whatever the weather, the main thing is that we're together."
+  },
+  {
+    "phrase": "die Einkäufe erledigen",
+    "meaning": "to do the shopping",
+    "level": 3.5,
+    "example": "Am Samstag [erledige] ich meistens [die Einkäufe].",
+    "example_en": "I usually do the shopping on Saturday."
+  },
+  {
+    "phrase": "jemandem stehen",
+    "meaning": "(clothes etc.) to suit someone",
+    "level": 3.5,
+    "example": "Die neue Brille [steht] dir ausgezeichnet!",
+    "example_en": "The new glasses suit you perfectly!"
+  },
+  {
+    "phrase": "{um}kippen",
+    "meaning": "to tip over, to fall over",
+    "level": 4.0,
+    "example": "Pass auf, das Glas [kippt] gleich [{um}]!",
+    "example_en": "Careful, the glass is about to tip over!"
+  },
+  {
+    "phrase": "Ach du meine Güte!",
+    "meaning": "Oh my goodness!",
+    "literal": "oh you my goodness",
+    "level": 4.0,
+    "example": "[Ach du meine Güte], ist es schon so spät?",
+    "example_en": "Oh my goodness, is it that late already?"
+  },
+  {
+    "phrase": "der Einzug",
+    "meaning": "moving in (to a new home)",
+    "level": 4.5,
+    "example": "Seit unserem [Einzug] haben wir die Nachbarn kaum gesehen.",
+    "example_en": "Since we moved in we've hardly seen the neighbours."
+  },
+  {
+    "phrase": "kurzerhand",
+    "meaning": "without further ado, on the spot",
+    "level": 4.5,
+    "example": "Der Bus kam nicht, also sind wir [kurzerhand] zu Fuß gegangen.",
+    "example_en": "The bus didn't come, so we just decided to walk instead."
+  },
+  {
+    "phrase": "erblicken",
+    "meaning": "to catch sight of, to spot",
+    "level": 4.5,
+    "example": "Als sie ihren Bruder am Bahnhof [erblickte], winkte sie sofort.",
+    "example_en": "When she spotted her brother at the station, she waved at once."
+  },
+  {
+    "phrase": "jemanden bei sich {auf}nehmen",
+    "meaning": "to take someone in (give them a home)",
+    "level": 4.5,
+    "example": "Meine Tante [nahm] den Hund [bei sich] [{auf}].",
+    "example_en": "My aunt took the dog in."
+  },
+  {
+    "phrase": "die Fürsorge",
+    "meaning": "care, looking after someone",
+    "level": 4.5,
+    "example": "Danke für deine [Fürsorge], ich fühle mich schon viel besser.",
+    "example_en": "Thanks for looking after me, I already feel much better."
+  },
+  {
+    "phrase": "die Schultern sinken lassen",
+    "meaning": "to let one's shoulders drop (in disappointment)",
+    "level": 4.5,
+    "example": "Als er seine Note sah, [ließ] er [die Schultern sinken].",
+    "example_en": "When he saw his grade, his shoulders dropped."
+  },
+  {
+    "phrase": "zutiefst",
+    "meaning": "deeply, profoundly",
+    "level": 4.5,
+    "example": "Ich bin euch [zutiefst] dankbar für eure Hilfe.",
+    "example_en": "I'm deeply grateful to you for your help."
+  },
+  {
+    "phrase": "die Reichweite",
+    "meaning": "reach, range",
+    "level": 4.5,
+    "example": "Medikamente gehören außer [Reichweite] von Kindern.",
+    "example_en": "Medicines should be kept out of children's reach."
+  },
+  {
+    "phrase": "insgeheim",
+    "meaning": "secretly, privately",
+    "level": 4.5,
+    "example": "[Insgeheim] hatte ich gehofft, dass du anrufst.",
+    "example_en": "Secretly I'd hoped you would call."
+  },
+  {
+    "phrase": "jemandem wird warm ums Herz",
+    "meaning": "to feel touched, to be moved",
+    "literal": "it gets warm around someone's heart",
+    "level": 4.5,
+    "example": "Bei dem Brief meiner Oma [wurde] mir [warm ums Herz].",
+    "example_en": "My grandma's letter warmed my heart."
+  },
+  {
+    "phrase": "eingeschüchtert",
+    "meaning": "intimidated (from einschüchtern, to intimidate)",
+    "level": 4.5,
+    "example": "Am ersten Arbeitstag war ich von den vielen neuen Gesichtern etwas [eingeschüchtert].",
+    "example_en": "On my first day at work I was a bit intimidated by all the new faces."
+  },
+  {
+    "phrase": "gleichgültig",
+    "meaning": "indifferent; all the same (to someone)",
+    "level": 4.5,
+    "example": "Mir ist es [gleichgültig], wo wir heute essen.",
+    "example_en": "I don't mind where we eat today."
+  },
+  {
+    "phrase": "bestreiten",
+    "meaning": "to deny, to dispute",
+    "level": 4.5,
+    "example": "Er [bestreitet], das Fenster kaputtgemacht zu haben.",
+    "example_en": "He denies having broken the window."
+  },
+  {
+    "phrase": "in bester Verfassung sein",
+    "meaning": "to be in top shape",
+    "level": 4.5,
+    "example": "Nach dem Urlaub [bin] ich wieder [in bester Verfassung].",
+    "example_en": "After the holiday I'm back in top shape."
+  },
+  {
+    "phrase": "{nach}lassen",
+    "meaning": "to ease off, to let up, to wane",
+    "level": 4.5,
+    "example": "Zum Glück [lässt] der Regen endlich [{nach}].",
+    "example_en": "Luckily the rain is finally letting up."
+  },
+  {
+    "phrase": "jemanden auf frischer Tat ertappen",
+    "meaning": "to catch someone red-handed",
+    "literal": "to catch someone in the fresh act",
+    "level": 4.5,
+    "example": "Die Polizei hat den Dieb [auf frischer Tat ertappt].",
+    "example_en": "The police caught the thief red-handed."
+  },
+  {
+    "phrase": "wählerisch",
+    "meaning": "picky, choosy",
+    "level": 4.5,
+    "example": "Mein kleiner Bruder ist beim Essen sehr [wählerisch].",
+    "example_en": "My little brother is very picky about food."
+  },
+  {
+    "phrase": "niedergeschlagen",
+    "meaning": "dejected, downcast",
+    "level": 4.5,
+    "example": "Nach dem verlorenen Spiel war die ganze Mannschaft [niedergeschlagen].",
+    "example_en": "After losing the match the whole team was downcast."
+  },
+  {
+    "phrase": "jemandem Sorgen bereiten",
+    "meaning": "to worry someone, to cause someone concern",
+    "level": 4.5,
+    "example": "Das schlechte Wetter [bereitet] mir [Sorgen].",
+    "example_en": "The bad weather is worrying me."
+  },
+  {
+    "phrase": "schmollen",
+    "meaning": "to sulk",
+    "level": 4.5,
+    "example": "Hör auf zu [schmollen], es war doch nur ein Witz.",
+    "example_en": "Stop sulking, it was only a joke."
+  },
+  {
+    "phrase": "kein Auge {zu}tun",
+    "meaning": "to not sleep a wink",
+    "literal": "to not close an eye",
+    "level": 4.5,
+    "example": "Wegen des Lärms habe ich [kein Auge {zu}getan].",
+    "example_en": "I didn't sleep a wink because of the noise."
+  },
+  {
+    "phrase": "jemanden Mühe kosten",
+    "meaning": "to take (someone) effort",
+    "level": 4.5,
+    "example": "Es [kostete] mich viel [Mühe], ruhig zu bleiben.",
+    "example_en": "It took me a lot of effort to stay calm."
+  },
+  {
+    "phrase": "jemandem zu schaffen machen",
+    "meaning": "to give someone trouble, to get to someone",
+    "level": 4.5,
+    "example": "Die Hitze [macht] mir echt [zu schaffen].",
+    "example_en": "The heat is really getting to me."
+  },
+  {
+    "phrase": "sich ein Nickerchen gönnen",
+    "meaning": "to treat oneself to a nap",
+    "level": 4.5,
+    "example": "Nach dem Mittagessen [gönne] ich [mir ein Nickerchen].",
+    "example_en": "After lunch I treat myself to a nap."
+  },
+  {
+    "phrase": "die Erleichterung",
+    "meaning": "relief",
+    "level": 4.5,
+    "example": "Zu meiner großen [Erleichterung] war der Zug noch nicht abgefahren.",
+    "example_en": "To my great relief the train hadn't left yet."
+  },
+  {
+    "phrase": "hartnäckig",
+    "meaning": "stubborn, persistent",
+    "level": 4.5,
+    "example": "Der Rotweinfleck auf dem Hemd ist ziemlich [hartnäckig].",
+    "example_en": "The red wine stain on the shirt is pretty stubborn."
+  },
+  {
+    "phrase": "um jeden Preis",
+    "meaning": "at any cost",
+    "level": 4.5,
+    "example": "Er will das Spiel [um jeden Preis] gewinnen.",
+    "example_en": "He wants to win the match at any cost."
+  },
+  {
+    "phrase": "in Maßen",
+    "meaning": "in moderation",
+    "level": 4.5,
+    "example": "Schokolade ist [in Maßen] gar nicht so ungesund.",
+    "example_en": "In moderation, chocolate isn't that unhealthy."
+  },
+  {
+    "phrase": "schlendern",
+    "meaning": "to stroll",
+    "level": 4.5,
+    "example": "Am Abend [schlenderten] wir durch die Altstadt.",
+    "example_en": "In the evening we strolled through the old town."
+  },
+  {
+    "phrase": "sich eine Erkältung {ein}fangen",
+    "meaning": "to catch a cold",
+    "level": 4.5,
+    "example": "Ich habe [mir] im Büro [eine Erkältung {ein}gefangen].",
+    "example_en": "I caught a cold at the office."
+  },
+  {
+    "phrase": "keine Seltenheit sein",
+    "meaning": "to be nothing unusual",
+    "literal": "to be no rarity",
+    "level": 4.5,
+    "example": "Schnee im April [ist] hier [keine Seltenheit].",
+    "example_en": "Snow in April is nothing unusual here."
+  },
+  {
+    "phrase": "gerührt",
+    "meaning": "touched, moved (emotionally)",
+    "level": 4.5,
+    "example": "Sie war so [gerührt], dass ihr die Tränen kamen.",
+    "example_en": "She was so moved that tears came to her eyes."
+  },
+  {
+    "phrase": "sich {zurück}ziehen",
+    "meaning": "to withdraw, to retreat (to one's room etc.)",
+    "level": 4.5,
+    "example": "Nach dem Essen [zog] er [sich] in sein Zimmer [{zurück}].",
+    "example_en": "After dinner he withdrew to his room."
+  },
+  {
+    "phrase": "lockern",
+    "meaning": "to loosen",
+    "level": 4.5,
+    "example": "Nach dem großen Essen musste ich meinen Gürtel [lockern].",
+    "example_en": "After the big meal I had to loosen my belt."
+  },
+  {
+    "phrase": "unerträglich",
+    "meaning": "unbearable",
+    "level": 4.5,
+    "example": "Im Sommer ist es in meiner Dachwohnung [unerträglich] heiß.",
+    "example_en": "In summer my attic flat is unbearably hot."
+  },
+  {
+    "phrase": "erschrocken",
+    "meaning": "startled, alarmed",
+    "level": 4.5,
+    "example": "[Erschrocken] drehte ich mich um, als jemand meinen Namen rief.",
+    "example_en": "Startled, I turned round when someone called my name."
+  },
+  {
+    "phrase": "bereuen",
+    "meaning": "to regret",
+    "level": 4.5,
+    "example": "Ich [bereue] keine Sekunde unserer Reise.",
+    "example_en": "I don't regret a single second of our trip."
+  },
+  {
+    "phrase": "mit klopfendem Herzen",
+    "meaning": "with a pounding heart",
+    "level": 4.5,
+    "example": "[Mit klopfendem Herzen] öffnete ich den Brief von der Uni.",
+    "example_en": "With a pounding heart I opened the letter from the university."
+  },
+  {
+    "phrase": "lauter (+ Nomen)",
+    "meaning": "nothing but, lots of",
+    "level": 4.5,
+    "example": "Im Keller waren [lauter] alte Zeitschriften.",
+    "example_en": "There was nothing but old magazines in the cellar."
+  },
+  {
+    "phrase": "umso mehr",
+    "meaning": "all the more",
+    "level": 4.5,
+    "example": "Nach dem langen Regen freuten wir uns [umso mehr] über die Sonne.",
+    "example_en": "After the long rain we were all the more glad of the sun."
+  },
+  {
+    "phrase": "sich wohlig strecken",
+    "meaning": "to stretch contentedly",
+    "level": 4.5,
+    "example": "Die Katze [streckte sich wohlig] in der Sonne.",
+    "example_en": "The cat stretched contentedly in the sun."
+  },
+  {
+    "phrase": "zerzausen",
+    "meaning": "to tousle, to ruffle (hair)",
+    "level": 5.0,
+    "example": "Der Wind hat mir die Haare total [zerzaust].",
+    "example_en": "The wind has completely messed up my hair."
+  },
+  {
+    "phrase": "etwas ins Visier nehmen",
+    "meaning": "to target something, to set one's sights on",
+    "literal": "to take something into the gun sight",
+    "level": 5.0,
+    "example": "Die Firma [nimmt] jetzt den asiatischen Markt [ins Visier].",
+    "example_en": "The company is now setting its sights on the Asian market."
+  },
+  {
+    "phrase": "wie geheißen",
+    "meaning": "as one was told",
+    "level": 5.0,
+    "example": "Er tat [wie geheißen] und wartete draußen.",
+    "example_en": "He did as he was told and waited outside."
+  },
+  {
+    "phrase": "die Kräfte bündeln",
+    "meaning": "to join forces, to pool resources",
+    "literal": "to bundle the strengths",
+    "level": 5.0,
+    "example": "Wenn wir unsere [Kräfte bündeln], sind wir viel schneller fertig.",
+    "example_en": "If we join forces we'll be finished much faster."
+  },
+  {
+    "phrase": "{inne}halten",
+    "meaning": "to pause, to stop (briefly)",
+    "level": 5.0,
+    "example": "Mitten im Satz [hielt] sie plötzlich [{inne}].",
+    "example_en": "She suddenly paused in mid-sentence."
+  },
+  {
+    "phrase": "jemandem läuft ein kalter Schauer über den Rücken",
+    "meaning": "a shiver runs down someone's spine",
+    "literal": "a cold shudder runs down someone's back",
+    "level": 5.0,
+    "example": "Bei diesem Horrorfilm [lief] mir [ein kalter Schauer über den Rücken].",
+    "example_en": "That horror film sent a shiver down my spine."
+  },
+  {
+    "phrase": "fein säuberlich",
+    "meaning": "neatly, meticulously",
+    "level": 5.0,
+    "example": "Er hat alle Rechnungen [fein säuberlich] sortiert.",
+    "example_en": "He sorted all the bills neatly."
+  },
+  {
+    "phrase": "jemandem etwas {auf}tischen",
+    "meaning": "to serve someone (a lie, a story)",
+    "literal": "to put something on the table for someone",
+    "level": 5.0,
+    "example": "[Tisch] mir doch nicht so eine Geschichte [{auf}]!",
+    "example_en": "Don't feed me a story like that!"
+  },
+  {
+    "phrase": "durchschaubar",
+    "meaning": "transparent, easy to see through",
+    "level": 5.0,
+    "example": "Deine Ausrede ist ziemlich [durchschaubar].",
+    "example_en": "Your excuse is pretty easy to see through."
+  },
+  {
+    "phrase": "kein Blatt vor den Mund nehmen",
+    "meaning": "to speak one's mind, to not mince words",
+    "literal": "to put no leaf in front of one's mouth",
+    "level": 5.0,
+    "example": "Meine Chefin [nimmt kein Blatt vor den Mund].",
+    "example_en": "My boss doesn't mince her words."
+  },
+  {
+    "phrase": "einer Sache nicht abgeneigt sein",
+    "meaning": "to not be averse to something",
+    "level": 5.0,
+    "example": "Einem Stück Kuchen [wäre] ich [nicht abgeneigt].",
+    "example_en": "I wouldn't say no to a piece of cake."
+  },
+  {
+    "phrase": "sich hin und her wälzen",
+    "meaning": "to toss and turn",
+    "literal": "to roll oneself back and forth",
+    "level": 5.0,
+    "example": "Ich habe [mich] die ganze Nacht [hin und her gewälzt].",
+    "example_en": "I tossed and turned all night."
+  },
+  {
+    "phrase": "schummrig",
+    "meaning": "dim, dimly lit",
+    "level": 5.0,
+    "example": "In der kleinen Bar war es [schummrig] und gemütlich.",
+    "example_en": "The little bar was dimly lit and cosy."
+  },
+  {
+    "phrase": "sich ein Lachen verkneifen",
+    "meaning": "to stifle a laugh",
+    "level": 5.0,
+    "example": "Ich konnte [mir ein Lachen] kaum [verkneifen].",
+    "example_en": "I could hardly keep from laughing."
+  },
+  {
+    "phrase": "die Strapazen",
+    "meaning": "strain, exertions (of a journey etc.)",
+    "level": 5.0,
+    "example": "Nach den [Strapazen] der langen Reise haben wir zwei Tage nur geschlafen.",
+    "example_en": "After the strain of the long journey we did nothing but sleep for two days."
+  },
+  {
+    "phrase": "etwas zum Besten geben",
+    "meaning": "to entertain people with something (a story, a song)",
+    "literal": "to give something to the best",
+    "level": 5.0,
+    "example": "Auf der Party [gab] mein Onkel alte Witze [zum Besten].",
+    "example_en": "At the party my uncle regaled everyone with old jokes."
+  },
+  {
+    "phrase": "jemandem einen Besuch {ab}statten",
+    "meaning": "to pay someone a visit",
+    "level": 5.0,
+    "example": "Morgen [statten] wir meiner Oma [einen Besuch] [{ab}].",
+    "example_en": "Tomorrow we're paying my grandma a visit."
+  },
+  {
+    "phrase": "einleuchtend",
+    "meaning": "plausible, convincing, makes sense",
+    "level": 5.0,
+    "example": "Deine Erklärung klingt [einleuchtend].",
+    "example_en": "Your explanation sounds convincing."
+  },
+  {
+    "phrase": "stutzen",
+    "meaning": "to stop short (in surprise), to do a double take; to trim (hedge, hair)",
+    "level": 5.0,
+    "example": "Als ich die Rechnung sah, [stutzte] ich kurz.",
+    "example_en": "When I saw the bill I did a double take."
+  },
+  {
+    "phrase": "fieberhaft",
+    "meaning": "feverishly, frantically",
+    "level": 5.0,
+    "example": "Wir suchten [fieberhaft] nach dem Autoschlüssel.",
+    "example_en": "We searched frantically for the car key."
+  },
+  {
+    "phrase": "Hemmungen haben",
+    "meaning": "to have qualms, to feel inhibited",
+    "level": 5.0,
+    "example": "Ich [hatte Hemmungen], vor so vielen Leuten zu sprechen.",
+    "example_en": "I felt inhibited about speaking in front of so many people."
+  },
+  {
+    "phrase": "die Stimmung trüben",
+    "meaning": "to dampen the mood",
+    "literal": "to cloud the mood",
+    "level": 5.0,
+    "example": "Lass uns [die] gute [Stimmung] nicht mit einem Streit [trüben].",
+    "example_en": "Let's not spoil the good mood with an argument."
+  },
+  {
+    "phrase": "das Leibgericht",
+    "meaning": "favourite dish",
+    "level": 5.0,
+    "example": "Lasagne ist mein [Leibgericht].",
+    "example_en": "Lasagne is my favourite dish."
+  },
+  {
+    "phrase": "{herum}stöbern",
+    "meaning": "to browse, to rummage around",
+    "level": 5.0,
+    "example": "Ich [stöbere] gern in alten Buchläden [{herum}].",
+    "example_en": "I like browsing in old bookshops."
+  },
+  {
+    "phrase": "jemanden überkommen",
+    "meaning": "(a feeling) to come over someone",
+    "level": 5.0,
+    "example": "Im Zug [überkam] mich plötzlich eine tiefe Müdigkeit.",
+    "example_en": "On the train a deep tiredness suddenly came over me."
+  },
+  {
+    "phrase": "widerwillig",
+    "meaning": "reluctantly",
+    "level": 5.0,
+    "example": "[Widerwillig] räumte mein Sohn sein Zimmer auf.",
+    "example_en": "My son reluctantly tidied his room."
+  },
+  {
+    "phrase": "verstummen",
+    "meaning": "to fall silent",
+    "level": 5.0,
+    "example": "Als die Lehrerin hereinkam, [verstummten] alle.",
+    "example_en": "When the teacher came in, everyone fell silent."
+  },
+  {
+    "phrase": "jemandem zu Hilfe springen",
+    "meaning": "to jump in to help someone (more often: zu Hilfe kommen/eilen)",
+    "level": 5.0,
+    "example": "Als mir die Antwort nicht einfiel, [sprang] mir meine Kollegin [zu Hilfe].",
+    "example_en": "When I couldn't think of the answer, my colleague jumped in to help."
+  },
+  {
+    "phrase": "bei jemandem in die Lehre gehen",
+    "meaning": "to do an apprenticeship with someone",
+    "level": 5.0,
+    "example": "Mit sechzehn [ging] er bei einem Schreiner [in die Lehre].",
+    "example_en": "At sixteen he became apprenticed to a carpenter."
+  },
+  {
+    "phrase": "die Faust ballen",
+    "meaning": "to clench one's fist",
+    "level": 5.0,
+    "example": "Vor Wut [ballte] er [die Faust].",
+    "example_en": "He clenched his fist in anger."
+  },
+  {
+    "phrase": "ohrenbetäubend",
+    "meaning": "deafening",
+    "level": 5.0,
+    "example": "Auf dem Konzert war die Musik [ohrenbetäubend] laut.",
+    "example_en": "At the concert the music was deafeningly loud."
+  },
+  {
+    "phrase": "Es spricht nichts dagegen.",
+    "meaning": "There's no reason not to.",
+    "literal": "nothing speaks against it",
+    "level": 5.0,
+    "example": "[Es spricht nichts dagegen], heute etwas früher Feierabend zu machen.",
+    "example_en": "There's no reason not to finish work a bit early today."
+  },
+  {
+    "phrase": "(festen) Halt finden",
+    "meaning": "to find a (firm) footing",
+    "level": 5.0,
+    "example": "Auf dem Eis konnte ich [keinen festen Halt finden].",
+    "example_en": "I couldn't get a firm footing on the ice."
+  },
+  {
+    "phrase": "restlos",
+    "meaning": "completely, totally",
+    "level": 5.0,
+    "example": "Das Konzert war [restlos] ausverkauft.",
+    "example_en": "The concert was completely sold out."
+  },
+  {
+    "phrase": "schmunzeln",
+    "meaning": "to smile (in amusement), to chuckle quietly",
+    "level": 5.0,
+    "example": "Bei seiner Antwort musste ich [schmunzeln].",
+    "example_en": "His answer made me smile."
+  },
+  {
+    "phrase": "jemandem etwas {näher}bringen",
+    "meaning": "to introduce someone to something, to make it accessible",
+    "level": 5.0,
+    "example": "Der Kurs will Kindern die Natur [{näher}bringen].",
+    "example_en": "The course aims to bring children closer to nature."
+  },
+  {
+    "phrase": "etwas auf Hochglanz polieren",
+    "meaning": "to polish something until it gleams",
+    "level": 5.0,
+    "example": "Vor dem Verkauf hat er sein Auto [auf Hochglanz poliert].",
+    "example_en": "Before selling it he polished his car until it gleamed."
+  },
+  {
+    "phrase": "jemanden bewirten",
+    "meaning": "to host, to wine and dine someone",
+    "level": 5.0,
+    "example": "Unsere Gastgeber haben uns mit Kaffee und Kuchen [bewirtet].",
+    "example_en": "Our hosts treated us to coffee and cake."
+  },
+  {
+    "phrase": "einer Sache {ab}schwören",
+    "meaning": "to give something up, to swear off",
+    "level": 5.5,
+    "example": "Seit Januar hat mein Vater dem Zucker [{ab}geschworen].",
+    "example_en": "Since January my father has sworn off sugar."
+  },
+  {
+    "phrase": "sich {auf}rappeln",
+    "meaning": "to pick oneself up, to get back on one's feet",
+    "level": 5.5,
+    "example": "Nach der Grippe habe ich [mich] langsam wieder [{auf}gerappelt].",
+    "example_en": "After the flu I slowly got back on my feet."
+  },
+  {
+    "phrase": "unversehens",
+    "meaning": "unexpectedly, all of a sudden",
+    "level": 5.5,
+    "example": "[Unversehens] stand er vor unserer Tür.",
+    "example_en": "All of a sudden he was standing at our door."
+  },
+  {
+    "phrase": "{nach}klingen",
+    "meaning": "to linger, to resonate (in one's mind)",
+    "level": 5.5,
+    "example": "Ihre Worte [klangen] noch lange in mir [{nach}].",
+    "example_en": "Her words stayed with me for a long time."
+  },
+  {
+    "phrase": "rücklings",
+    "meaning": "backwards, on one's back",
+    "level": 5.5,
+    "example": "Er rutschte aus und fiel [rücklings] in den Schnee.",
+    "example_en": "He slipped and fell backwards into the snow."
+  },
+  {
+    "phrase": "linsen",
+    "meaning": "(colloq.) to peek, to peep",
+    "level": 5.5,
+    "example": "Neugierig [linste] er durch das Schlüsselloch.",
+    "example_en": "Curious, he peeked through the keyhole."
+  }
+]
