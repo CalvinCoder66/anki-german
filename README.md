@@ -100,7 +100,7 @@ existing cards and keeps your review history instead of duplicating them.
 Two lists are always added, slotted in among the sentences by level:
 
 - `data/source/german_idioms.json`: everyday idioms (*Ich verstehe nur Bahnhof*).
-- `data/source/german_praeludium.json`: about 100 B2–C1 words and phrases met
+- `data/source/german_praeludium.json`: about 180 B2–C1 words and phrases met
   in the preview of the novel *Frieren – Präludium* (levels 3.5–5.5). The
   example sentences are new and everyday, with no names or plot, so they
   spoil nothing; the cards are tagged `source::praeludium`.
