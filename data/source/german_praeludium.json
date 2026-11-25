@@ -764,8 +764,8 @@
     "example_en": "My throat tightened with nerves."
   },
   {
-    "phrase": "jemandem keinen Glauben schenken",
-    "meaning": "to not believe someone",
+    "phrase": "jemandem/einer Sache keinen Glauben schenken",
+    "meaning": "to not believe someone/something",
     "literal": "to give someone no belief",
     "level": 5.0,
     "example": "Seinen Versprechungen [schenke] ich [keinen Glauben] mehr.",
@@ -774,7 +774,7 @@
   {
     "phrase": "eine Entscheidung treffen",
     "meaning": "to make a decision",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Bis Freitag muss ich [eine Entscheidung treffen].",
     "example_en": "I have to make a decision by Friday."
   },
@@ -986,7 +986,7 @@
   {
     "phrase": "sich lohnen",
     "meaning": "to be worth it",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Das frühe Aufstehen hat [sich gelohnt], der Sonnenaufgang war wunderschön.",
     "example_en": "Getting up early was worth it, the sunrise was beautiful."
   },
@@ -1067,7 +1067,7 @@
     "meaning": "no sign of …",
     "literal": "no trace of …",
     "level": 4.5,
-    "example": "Vom versprochenen Sonnenschein war [keine Spur].",
+    "example": "[Von] dem versprochenen Sonnenschein war [keine Spur].",
     "example_en": "There was no sign of the promised sunshine."
   },
   {
@@ -1121,7 +1121,7 @@
   },
   {
     "phrase": "die Stimmung {auf}hellen",
-    "meaning": "to lighten the mood",
+    "meaning": "to lighten the mood (with jokes, more often: die Stimmung auflockern)",
     "literal": "to brighten the mood",
     "level": 5.0,
     "example": "Mit ein paar Witzen versuchte er, [die Stimmung] [{auf}zuhellen].",
@@ -1205,13 +1205,13 @@
     "phrase": "dafür sorgen, dass …",
     "meaning": "to make sure that …",
     "level": 4.0,
-    "example": "[Sorg] bitte [dafür], dass die Haustür abgeschlossen ist.",
+    "example": "[Sorg] bitte [dafür], [dass] die Haustür abgeschlossen ist.",
     "example_en": "Please make sure the front door is locked."
   },
   {
     "phrase": "zuverlässig",
     "meaning": "reliable",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Mein altes Auto ist immer noch sehr [zuverlässig].",
     "example_en": "My old car is still very reliable."
   },
@@ -1250,21 +1250,21 @@
     "phrase": "indessen",
     "meaning": "(formal) meanwhile; however",
     "level": 5.5,
-    "example": "Ich koche, [indessen] kannst du den Tisch decken.",
-    "example_en": "I'll cook; meanwhile you can set the table."
+    "example": "Ich koche, und du kannst [indessen] den Tisch decken.",
+    "example_en": "I'll cook, and meanwhile you can set the table."
   },
   {
     "phrase": "keine Rolle spielen",
     "meaning": "to not matter",
     "literal": "to play no role",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Ob du etwas später kommst, [spielt keine Rolle].",
     "example_en": "It doesn't matter if you come a bit later."
   },
   {
     "phrase": "vor Kurzem",
     "meaning": "recently, not long ago",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Ich habe [vor Kurzem] mit dem Joggen angefangen.",
     "example_en": "I started jogging recently."
   },
@@ -1278,7 +1278,7 @@
   {
     "phrase": "weder … noch …",
     "meaning": "neither … nor …",
-    "level": 4.0,
+    "level": 3.5,
     "example": "Ich habe [weder] Zeit [noch] Lust.",
     "example_en": "I have neither the time nor the inclination."
   }
